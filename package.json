@@ -1,0 +1,18 @@
+{
+  "name": "angular-daterangepicker",
+  "version": "0.1.0",
+  "description": "Angular.js wrapper for dangrossman/bootstrap-daterangepicker",
+  "dependencies": {
+    "grunt": "",
+    "grunt-contrib-uglify": "",
+    "grunt-karma": "",
+    "karma": "",
+    "karma-jasmine": "",
+    "karma-phantomjs-launcher": "",
+    "karma-junit-reporter": "",
+    "grunt-git-describe": ""
+  },
+  "scripts": {
+    "test": "grunt karma"
+  }
+}

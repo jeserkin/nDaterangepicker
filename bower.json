@@ -1,0 +1,17 @@
+{
+  "name": "angular-daterangepicker",
+  "version": "0.1.0",
+  "main": "build/angular-daterangepicker.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "example",
+    "Gruntfile.js",
+    "package.json",
+    "src",
+    "**/*.min.js"
+  ]
+}
