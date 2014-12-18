@@ -13,5 +13,10 @@
     "package.json",
     "src",
     "**/*.min.js"
-  ]
+  ],
+  "dependencies": {
+    "angular": ">= 1.0.7",
+    "bootstrap-daterangepicker": "*",
+    "bootstrap": "~3.0.0"
+  }
 }
