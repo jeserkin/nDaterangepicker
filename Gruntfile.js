@@ -1,8 +1,21 @@
 module.exports = function(grunt) {
 
+  require('load-grunt-tasks')(grunt);
+
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
+
+    copy: {
+      main: {
+        files: [
+          {
+            src: './src/angular-daterangepicker.js',
+            dest: './build/angular-daterangepicker.js'
+          }
+        ]
+      }
+    },
 
     uglify: {
       options: {
@@ -16,6 +29,12 @@ module.exports = function(grunt) {
     },
 
     karma: {
+      options: {
+        keepalive: false,
+        configFile: 'karma.conf.js',
+        autoWatch: false,
+        singleRun: true
+      }
     },
 
     "git-describe": {
@@ -25,13 +44,11 @@ module.exports = function(grunt) {
         }
       }
     }
-
   });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-git-describe');
-
-  grunt.registerTask('default', []);
+  grunt.registerTask('default', [
+    'copy',
+    'uglify'
+  ]);
   grunt.registerTask('prod', ['git-describe:run', 'uglify']);
 };
