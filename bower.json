@@ -15,8 +15,10 @@
     "**/*.min.js"
   ],
   "dependencies": {
-    "angular": ">= 1.0.7",
-    "bootstrap-daterangepicker": "*",
+    "angular": ">= 1.2.25",
+    "angular-resource": ">= 1.2.25",
+    "angular-sanitize": ">= 1.2.25",
+    "bootstrap-daterangepicker-reloaded": "1.3.17-beta",
     "bootstrap": "~3.0.0"
   }
 }

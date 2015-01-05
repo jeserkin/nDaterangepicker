@@ -3,11 +3,94 @@
 <head>
   <meta charset="utf-8">
   <title>Daterangepicker Demo</title>
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker-reloaded/daterangepicker-bs3.css" />
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
 </head>
 <body>
-  <div ng-cloak ng-controller="MainCtrl"></div>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.3/angular.js"></script>
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="https://github.com/jeserkin/angular-daterangepicker">angular-daterangepicker</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container" ng-cloak>
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>Usage Examples</h1>
+        <hr />
+
+        <form class="form-horizontal" role="form" ng-controller="jQueryCtrl">
+          <h2>jQuery usage example (original plugin)</h2>
+
+          <div class="form-group well">
+            <div class="col-xs-3">
+              <div class="input-group date-range-picker">
+                <input type="text" name="example1" id="example1" class="form-control" readonly="readonly" />
+
+                <span class="input-group-btn">
+                  <label type="button" class="btn btn-default date" for="example1">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  </label>
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <hr />
+
+        <form class="form-horizontal" role="form" ng-controller="AngularShorthandCtrl">
+          <h2>Angular usage example (with shorthand directive)</h2>
+
+          <div class="form-group well">
+            <div class="col-xs-3">
+              <shorthand-date-range-picker identifier="{{ngDate.identifier}}" name="{{ngDate.name}}" model="ngDate.model" options="ngDate.options" with-btn="false"></shorthand-date-range-picker>
+            </div>
+          </div>
+        </form>
+
+        <hr />
+
+        <form class="form-horizontal" role="form" ng-controller="AngularCtrl">
+          <h2>Angular usage example (without shorthand directive)</h2>
+
+          <div class="form-group well">
+            <div class="col-xs-3">
+              <button type="button" class="btn btn-link" title="Tühjenda" ng-click="reset(ngDate.identifier)">Reset</button>
+
+              <div class="input-group date-range-picker">
+                <input type="text" id="{{ngDate.identifier}}" class="form-control" name="{{ngDate.name}}" ng-model="ngDate.model" options="ngDate.options" date-range-picker />
+
+                <span class="input-group-btn">
+                  <label type="button" class="btn btn-default date" for="{{ngDate.identifier}}">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </label>
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-resource/angular-resource.js"></script>
+  <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="../bower_components/moment/moment.js"></script>
+  <script>moment.locale('et');</script>
+  <script src="../bower_components/bootstrap-daterangepicker-reloaded/daterangepicker.js"></script>
   <script src="../build/angular-daterangepicker.js"></script>
+  <!--<script src="../src/angular-daterangepicker.js"></script>-->
   <script src="app.js"></script>
 </body>
 </html>
