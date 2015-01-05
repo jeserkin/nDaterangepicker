@@ -503,10 +503,10 @@
                   maxDate = scope.internalOptions.maxDate,
                   minDate = scope.internalOptions.minDate;
 
-                if (maxDate && typeof maxDate != "boolean" && currentDate.isAfter(maxDate)) {
+                if (maxDate && typeof maxDate != "undefined" && currentDate.isAfter(maxDate)) {
                   dateToSet = _getMoment(maxDate);
                 }
-                else if (minDate && typeof minDate != "boolean" && currentDate.isBefore(minDate)) {
+                else if (minDate && typeof minDate != "undefined" && currentDate.isBefore(minDate)) {
                   dateToSet = _getMoment(minDate);
                 }
                 else {
