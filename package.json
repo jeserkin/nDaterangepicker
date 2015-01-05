@@ -1,22 +1,21 @@
 {
-  "name": "angular-daterangepicker",
-  "version": "0.1.0",
+  "name": "nDaterangepicker",
+  "version": "0.1.1",
   "description": "Angular.js wrapper for dangrossman/bootstrap-daterangepicker",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jeserkin/angular-daterangepicker.git"
+    "url": "git://github.com/jeserkin/nDaterangepicker.git"
   },
   "dependencies": {
     "grunt": "",
-    "grunt-contrib-copy": "",
+    "grunt-contrib-concat": "",
     "grunt-contrib-uglify": "",
     "grunt-karma": "",
     "load-grunt-tasks": "",
     "karma": "",
     "karma-jasmine": "",
     "karma-phantomjs-launcher": "",
-    "karma-junit-reporter": "",
-    "grunt-git-describe": ""
+    "karma-junit-reporter": ""
   },
   "scripts": {
     "test": "grunt karma"

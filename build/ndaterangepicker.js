@@ -1,11 +1,14 @@
+/**
+ * nDaterangepicker 0.1.1
+ * @author Eugene Serkin
+ * @license MIT License http://opensource.org/licenses/MIT
+ */
 'use strict';
 
 (function(angular) {
-  angular.module('ngDaterangepicker', [])
-    .factory('PropertyManager', function() {
-      function PropertyManager() {}
-
-      PropertyManager.prototype.getProperties = function(obj) {
+  angular.module('nDaterangepicker', [])
+    .factory('PropertyUtil', function() {
+      var getProperties = function(obj) {
         var result = {};
 
         for (var property in obj) {
@@ -19,12 +22,11 @@
 
       return {
         getProperties: function(obj) {
-          var manager = new PropertyManager();
-          return manager.getProperties(obj);
+          return getProperties(obj);
         }
       };
     })
-    .service('DateRangePickerLocaleService', function(PropertyManager) {
+    .service('DateRangePickerLocaleService', function(PropertyUtil) {
       this.applyLabel = 'Apply';
       this.cancelLabel = 'Cancel';
       this.fromLabel = 'From';
@@ -37,6 +39,8 @@
 
       this.setApplyLabel = function(applyLabel) {
         this.applyLabel = applyLabel;
+
+        return this;
       };
 
       this.getApplyLabel = function() {
@@ -45,6 +49,8 @@
 
       this.setCancelLabel = function(cancelLabel) {
         this.cancelLabel = cancelLabel;
+
+        return this;
       };
 
       this.getCancelLabel = function() {
@@ -53,6 +59,8 @@
 
       this.setFromLabel = function(fromLabel) {
         this.fromLabel = fromLabel;
+
+        return this;
       };
 
       this.getFromLabel = function() {
@@ -61,6 +69,8 @@
 
       this.setToLabel = function(toLabel) {
         this.toLabel = toLabel;
+
+        return this;
       };
 
       this.getToLabel = function() {
@@ -69,6 +79,8 @@
 
       this.setWeekLabel = function(weekLabel) {
         this.weekLabel = weekLabel;
+
+        return this;
       };
 
       this.getWeekLabel = function() {
@@ -77,6 +89,8 @@
 
       this.setCustomRangeLabel = function(customRangeLabel) {
         this.customRangeLabel = customRangeLabel;
+
+        return this;
       };
 
       this.getCustomRangeLabel = function() {
@@ -85,6 +99,8 @@
 
       this.setDaysOfWeek = function(daysOfWeek) {
         this.daysOfWeek = daysOfWeek;
+
+        return this;
       };
 
       this.getDaysOfWeek = function() {
@@ -93,6 +109,8 @@
 
       this.setMonthNames = function(monthNames) {
         this.monthNames = monthNames;
+
+        return this;
       };
 
       this.getMonthNames = function() {
@@ -101,6 +119,8 @@
 
       this.setFirstDay = function(firstDay) {
         this.firstDay = firstDay;
+
+        return this;
       };
 
       this.getFirstDay = function() {
@@ -108,14 +128,14 @@
       };
 
       this.getList = function() {
-        return PropertyManager.getProperties(this);
+        return PropertyUtil.getProperties(this);
       };
     })
-    .service('DateRangePickerService', function(DateRangePickerLocaleService, PropertyManager) {
-      this.startDate = false;
-      this.endDate = false;
-      this.minDate = false;
-      this.maxDate = false;
+    .service('DateRangePickerService', function(PropertyUtil) {
+      this.startDate;
+      this.endDate;
+      this.minDate;
+      this.maxDate;
       this.dateLimit = false;
       this.timeZone = null;
       this.showDropdowns = false;
@@ -141,6 +161,8 @@
 
       this.setStartDate = function(startDate) {
         this.startDate = startDate;
+
+        return this;
       };
 
       this.getStartDate = function() {
@@ -149,6 +171,8 @@
 
       this.setEndDate = function(endDate) {
         this.endDate = endDate;
+
+        return this;
       };
 
       this.getEndDate = function() {
@@ -157,6 +181,8 @@
 
       this.setMinDate = function(minDate) {
         this.minDate = minDate;
+
+        return this;
       };
 
       this.getMinDate = function() {
@@ -165,6 +191,8 @@
 
       this.setMaxDate = function(maxDate) {
         this.maxDate = maxDate;
+
+        return this;
       };
 
       this.getMaxDate = function() {
@@ -173,6 +201,8 @@
 
       this.setDateLimit = function(dateLimit) {
         this.dateLimit = dateLimit;
+
+        return this;
       };
 
       this.getDateLimit = function() {
@@ -181,6 +211,8 @@
 
       this.setTimeZone = function(timeZone) {
         this.timeZone = timeZone;
+
+        return this;
       };
 
       this.getTimeZone = function() {
@@ -189,6 +221,8 @@
 
       this.setShowDropdowns = function(showDropdowns) {
         this.showDropdowns = showDropdowns;
+
+        return this;
       };
 
       this.isShowDropdowns = function() {
@@ -197,6 +231,8 @@
 
       this.setShowWeekNumbers = function(showWeekNumbers) {
         this.showWeekNumbers = showWeekNumbers;
+
+        return this;
       };
 
       this.isShowWeekNumbers = function() {
@@ -205,6 +241,8 @@
 
       this.setTimePicker = function(timePicker) {
         this.timePicker = timePicker;
+
+        return this;
       };
 
       this.isTimePicker = function() {
@@ -213,6 +251,8 @@
 
       this.setTimePickerIncrement = function(timePickerIncrement) {
         this.timePickerIncrement = timePickerIncrement;
+
+        return this;
       };
 
       this.getTimePickerIncrement = function() {
@@ -221,6 +261,8 @@
 
       this.setTimePicker12Hour = function(timePicker12Hour) {
         this.timePicker12Hour = timePicker12Hour;
+
+        return this;
       };
 
       this.isTimePicker12Hour = function() {
@@ -229,6 +271,8 @@
 
       this.setTimePickerSeconds = function(timePickerSeconds) {
         this.timePickerSeconds = timePickerSeconds;
+
+        return this;
       };
 
       this.isTimePickerSeconds = function() {
@@ -237,10 +281,14 @@
 
       this.addRange = function(rangeName, range) {
         this.ranges[rangeName] = range;
+
+        return this;
       };
 
       this.setRanges = function(ranges) {
         this.ranges = ranges;
+
+        return this;
       };
 
       this.getRanges = function() {
@@ -249,6 +297,8 @@
 
       this.setOpens = function(opens) {
         this.opens = opens;
+
+        return this;
       };
 
       this.getOpens = function() {
@@ -257,10 +307,14 @@
 
       this.addButtonClass = function(buttonClass) {
         this.buttonClasses.push(buttonClass);
+
+        return this;
       };
 
       this.setButtonClasses = function(buttonClasses) {
         this.buttonClasses = buttonClasses;
+
+        return this;
       };
 
       this.getButtonClasses = function() {
@@ -269,6 +323,8 @@
 
       this.setApplyBtnClass = function(applyClass) {
         this.applyClass = applyClass;
+
+        return this;
       };
 
       this.getApplyBtnClass = function() {
@@ -277,6 +333,8 @@
 
       this.setCancelBtnClass = function(cancelClass) {
         this.cancelClass = cancelClass;
+
+        return this;
       };
 
       this.getCancelBtnClass = function() {
@@ -285,6 +343,8 @@
 
       this.setFormat = function(format) {
         this.format = angular.uppercase(format);
+
+        return this;
       };
 
       this.getFormat = function() {
@@ -293,6 +353,8 @@
 
       this.setSeparator = function(separator) {
         this.separator = separator;
+
+        return this;
       };
 
       this.getSeparator = function() {
@@ -301,6 +363,8 @@
 
       this.setSingleDatePicker = function(singleDatePicker) {
         this.singleDatePicker = singleDatePicker;
+
+        return this;
       };
 
       this.isSingleDatePicker = function() {
@@ -309,6 +373,8 @@
 
       this.setParentEl = function(parentEl) {
         this.parentEl = parentEl;
+
+        return this;
       };
 
       this.getParentEl = function() {
@@ -317,10 +383,14 @@
 
       this.addIconBtnClass = function(iconBtnClass) {
         this.iconBtnClasses.push(iconBtnClass);
+
+        return this;
       };
 
       this.setIconBtnClasses = function(iconBtnClasses) {
         this.iconBtnClasses = iconBtnClasses;
+
+        return this;
       };
 
       this.getIconBtnClasses = function() {
@@ -331,6 +401,8 @@
         if (this.isValidDateType(type)) {
           this.type = type;
         }
+
+        return this;
       };
 
       this.isValidDateType = function(type) {
@@ -345,7 +417,7 @@
       };
 
       this.getList = function() {
-        return PropertyManager.getProperties(this);
+        return PropertyUtil.getProperties(this);
       };
     })
     .directive('shorthandDateRangePicker', function() {
@@ -398,10 +470,10 @@
             delete $scope.options.locale;
           }
 
-          $scope.localOptions = angular.extend({}, DateRangePickerService.getList(), {locale: locale}, $scope.options);
-          $scope.localOptions.format = angular.uppercase($scope.localOptions.format);
+          $scope.internalOptions = angular.extend({}, DateRangePickerService.getList(), {locale: locale}, $scope.options);
+          $scope.internalOptions.format = angular.uppercase($scope.internalOptions.format);
 
-          DateRangePickerService.isValidDateType($scope.localOptions.type);
+          DateRangePickerService.isValidDateType($scope.internalOptions.type);
         },
         link: function(scope, iElement, iAttrs, ngModelCtrl, transcludeFn) {
           var el = angular.element(iElement),
@@ -426,17 +498,23 @@
             return $timeout(function() {
               return scope.$apply(function() {
                 var picker = _getPicker(),
-                  dateToSet;
+                  dateToSet,
+                  currentDate = moment(),
+                  maxDate = scope.internalOptions.maxDate,
+                  minDate = scope.internalOptions.minDate;
 
-                if (typeof scope.localOptions.maxDate != "boolean") {
-                  dateToSet = moment(scope.localOptions.maxDate, scope.localOptions.format).format(scope.localOptions.format);
+                if (maxDate && typeof maxDate != "boolean" && currentDate.isAfter(maxDate)) {
+                  dateToSet = _getMoment(maxDate);
+                }
+                else if (minDate && typeof minDate != "boolean" && currentDate.isBefore(minDate)) {
+                  dateToSet = _getMoment(minDate);
                 }
                 else {
-                  dateToSet = moment().format(scope.localOptions.format);
+                  dateToSet = currentDate;
                 }
 
-                picker.setStartDate(dateToSet);
-                picker.setEndDate(dateToSet);
+                picker.setStartDate(dateToSet.format(scope.internalOptions.format));
+                picker.setEndDate(dateToSet.format(scope.internalOptions.format));
 
                 ngModelCtrl.$setViewValue({
                   startDate: null,
@@ -487,7 +565,7 @@
           };
 
           _init = function() {
-            return el.daterangepicker(scope.localOptions, function(start, end, label) {
+            return el.daterangepicker(scope.internalOptions, function(start, end, label) {
               return $timeout(function() {
                 return scope.$apply(function() {
                   ngModelCtrl.$setViewValue({
@@ -506,9 +584,9 @@
 
           _formatted = function(viewVal) {
             var f = function(date) {
-              return _getMoment(date).format(scope.localOptions.format);
+              return _getMoment(date).format(scope.internalOptions.format);
             };
-            return [f(viewVal.startDate), f(viewVal.endDate)].join(scope.localOptions.separator);
+            return [f(viewVal.startDate), f(viewVal.endDate)].join(scope.internalOptions.separator);
           };
 
           _getMoment = function(date) {
@@ -522,7 +600,7 @@
                 result = moment(date);
               }
               else {
-                result = moment(date, scope.localOptions.format);
+                result = moment(date, scope.internalOptions.format);
               }
 
               return result;
@@ -532,7 +610,7 @@
           _toType = function(date) {
             var momentObj = _getMoment(date);
 
-            switch (scope.localOptions.type) {
+            switch (scope.internalOptions.type) {
               case 'moment': {
                 return momentObj;
               }
@@ -543,19 +621,19 @@
 
               default:
               case 'string': {
-                return momentObj.format(scope.localOptions.format);
+                return momentObj.format(scope.internalOptions.format);
               }
             }
           };
 
           _validate = function(value) {
-            if (scope.localOptions.minDate && value.startDate) {
-              _validateMin(scope.localOptions.minDate, value.startDate);
+            if (scope.internalOptions.minDate && value.startDate) {
+              _validateMin(scope.internalOptions.minDate, value.startDate);
             } else {
               ngModelCtrl.$setValidity('minDate', true);
             }
-            if (scope.localOptions.maxDate && value.endDate) {
-              _validateMax(scope.localOptions.maxDate, value.endDate);
+            if (scope.internalOptions.maxDate && value.endDate) {
+              _validateMax(scope.internalOptions.maxDate, value.endDate);
             } else {
               ngModelCtrl.$setValidity('maxDate', true);
             }

@@ -2,9 +2,18 @@
 <html lang="en" ng-app="app">
 <head>
   <meta charset="utf-8">
-  <title>Daterangepicker Demo</title>
+  <title>nDaterangepicker Demo</title>
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker-reloaded/daterangepicker-bs3.css" />
+  <link rel="stylesheet" href="sticky-footer-navbar.css" />
+  <style>
+    .copyleft {
+      display: inline-block;
+      -ms-transform: rotate(180deg); /* IE 9 */
+      -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+      transform: rotate(180deg);
+    }
+  </style>
   <script src="../bower_components/jquery/dist/jquery.js"></script>
 </head>
 <body>
@@ -17,7 +26,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="https://github.com/jeserkin/angular-daterangepicker">angular-daterangepicker</a>
+        <a class="navbar-brand" href="https://github.com/jeserkin/nDaterangepicker">nDaterangepicker</a>
       </div>
     </div>
   </nav>
@@ -26,71 +35,165 @@
     <div class="row">
       <div class="col-xs-12">
         <h1>Usage Examples</h1>
+
+        <h2>AngularJS <small>(with and without shorthand directive)</small></h2>
         <hr />
 
-        <form class="form-horizontal" role="form" ng-controller="jQueryCtrl">
-          <h2>jQuery usage example (original plugin)</h2>
-
-          <div class="form-group well">
-            <div class="col-xs-3">
-              <div class="input-group date-range-picker">
-                <input type="text" name="example1" id="example1" class="form-control" readonly="readonly" />
-
-                <span class="input-group-btn">
-                  <label type="button" class="btn btn-default date" for="example1">
-                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                  </label>
-                </span>
-              </div>
-            </div>
-          </div>
-        </form>
-
-        <hr />
-
-        <form class="form-horizontal" role="form" ng-controller="AngularShorthandCtrl">
+        <form class="form-horizontal" role="form" ng-controller="AngularCtrl">
           <h2>Angular usage example (with shorthand directive)</h2>
 
           <div class="form-group well">
             <div class="col-xs-3">
-              <shorthand-date-range-picker identifier="{{ngDate.identifier}}" name="{{ngDate.name}}" model="ngDate.model" options="ngDate.options" with-btn="false"></shorthand-date-range-picker>
+              <shorthand-date-range-picker identifier="{{nDateShort.identifier}}" name="{{nDateShort.name}}" model="nDateShort.model" options="nDateShort.options" with-btn="false"></shorthand-date-range-picker>
+            </div>
+          </div>
+
+          <h2>Angular usage example (without shorthand directive)</h2>
+
+          <div class="form-group well">
+            <div class="col-xs-3">
+              <div class="input-group date-range-picker">
+                <input type="text" id="{{nDate.identifier}}" class="form-control" name="{{nDate.name}}" ng-model="nDate.model" options="nDate.options" date-range-picker />
+
+                <span class="input-group-btn">
+                  <label type="button" class="btn btn-default date" for="{{nDate.identifier}}">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </label>
+                </span>
+              </div>
+              <div class="input-group">
+                <button type="button" class="btn btn-link" title="Reset" ng-click="reset(nDate.identifier)" ng-show="nDate.model.startDate != null">Reset</button>
+              </div>
             </div>
           </div>
         </form>
 
         <hr />
 
-        <form class="form-horizontal" role="form" ng-controller="AngularCtrl">
-          <h2>Angular usage example (without shorthand directive)</h2>
+        <form class="form-horizontal" role="form" ng-controller="jQueryCtrl">
+          <h2>jQuery</h2>
+          <hr />
+
+          <h3>Basic Date Range Picker</h3>
 
           <div class="form-group well">
             <div class="col-xs-3">
-              <button type="button" class="btn btn-link" title="Tühjenda" ng-click="reset(ngDate.identifier)">Reset</button>
-
               <div class="input-group date-range-picker">
-                <input type="text" id="{{ngDate.identifier}}" class="form-control" name="{{ngDate.name}}" ng-model="ngDate.model" options="ngDate.options" date-range-picker />
+                <div class="input-group-btn">
+                  <div class="btn btn-default date">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  </div>
+                </div>
 
-                <span class="input-group-btn">
-                  <label type="button" class="btn btn-default date" for="{{ngDate.identifier}}">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                  </label>
-                </span>
+                <input type="text" name="basic" id="basic" class="form-control" value="03/18/2013 - 03/23/2013" />
               </div>
             </div>
+          </div>
+
+          <h3>Basic Single Date Picker</h3>
+
+          <div class="form-group well">
+            <div class="col-xs-2">
+              <div class="input-group date-range-picker">
+                <div class="input-group-btn">
+                  <div class="btn btn-default date">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  </div>
+                </div>
+
+                <input type="text" name="basic-single" id="basicSingle" class="form-control" value="03/18/2013" />
+              </div>
+            </div>
+          </div>
+
+          <h3>Date Range &amp; Time Picker with 30 Minute Increments</h3>
+
+          <div class="form-group well">
+            <div class="col-xs-4">
+              <div class="input-group date-range-picker">
+                <div class="input-group-btn">
+                  <div class="btn btn-default date">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  </div>
+                </div>
+
+                <input type="text" name="date-and-time-range-picker" id="dateAndTimeRangePicker" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM" />
+              </div>
+            </div>
+          </div>
+
+          <h3>Options Usage</h3>
+
+          <div class="form-group well">
+            <div class="col-xs-8">
+              <ul class="list-inline">
+                <li>
+                  <button type="button" id="optionSetOne" class="btn btn-primary">Apply Option Set 1</button>
+                </li>
+                <li>
+                  <button type="button" id="optionSetTwo" class="btn btn-primary">Apply Option Set 2</button>
+                </li>
+                <li>
+                  <button type="button" id="removeDateRangePicker" class="btn btn-primary">Remove DateRangePicker</button>
+                </li>
+              </ul>
+            </div>
+            <div class="col-xs-4" style="background:#fff; cursor:pointer; border:1px solid #ccc; padding:5px 10px;">
+              <div class="row" id="optionsContainer">
+                <div class="col-xs-1">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </div>
+                <div class="col-xs-11 text-right">
+                  <span></span>
+                  <b class="caret"></b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Plays nicely with Bootstrap dropdowns</h3>
+
+          <div class="form-group well">
+            <ul class="list-inline">
+              <li class="col-xs-3">
+                <div class="dropdown">
+                  <button type="button" class="btn btn-primary" data-toggle="dropdown">Regular bootstrap dropdown</button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <li>
+                      <a href="#">item</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="col-xs-4">
+                <div class="row" id="optionsContainerCenter" style="background:#fff; cursor:pointer; border:1px solid #ccc; padding:5px 10px;">
+                  <div class="col-xs-1">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </div>
+                  <div class="col-xs-11 text-right">
+                    <span></span>
+                    <b class="caret"></b>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </form>
       </div>
     </div>
   </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted"><span class="copyleft">&copy;</span> 2014-2015 <a href="https://github.com/jeserkin/nDaterangepicker">nDaterangepicker</a></p>
+    </div>
+  </footer>
   <script src="../bower_components/angular/angular.js"></script>
-  <script src="../bower_components/angular-resource/angular-resource.js"></script>
-  <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
   <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="../bower_components/moment/moment.js"></script>
-  <script>moment.locale('et');</script>
   <script src="../bower_components/bootstrap-daterangepicker-reloaded/daterangepicker.js"></script>
-  <script src="../build/angular-daterangepicker.js"></script>
-  <!--<script src="../src/angular-daterangepicker.js"></script>-->
+  <script src="../build/ndaterangepicker.js"></script>
+  <!--<script src="../src/ndaterangepicker.js"></script>-->
   <script src="app.js"></script>
 </body>
 </html>
