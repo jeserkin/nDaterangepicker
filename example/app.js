@@ -10,22 +10,11 @@ angular.module('app', ['nDaterangepicker'])
       options: {
         identifier: 'nDate',
         format: 'dd.mm.yyyy',
-        //maxDate: moment('31.12.2014', angular.uppercase('dd.mm.yyyy'))
-        //maxDate: '31.12.2014',
-        locale: {}
       },
-      /*model: {
-       startDate: moment('01.01.2014', angular.uppercase('dd.mm.yyyy')),
-       endDate: moment('01.01.2015', angular.uppercase('dd.mm.yyyy'))
-       }*/
       model: {
         startDate: '01.01.2014',
         endDate: '01.01.2014'
       }
-      /*model: {
-       startDate: null,
-       endDate: null
-       }*/
     };
 
     $scope.nDateShort = {
@@ -34,8 +23,6 @@ angular.module('app', ['nDaterangepicker'])
       options: {
         identifier: 'nDateShort',
         format: 'dd.mm.yyyy',
-        //maxDate: moment('31.12.2014', angular.uppercase('dd.mm.yyyy'))
-        //maxDate: '31.12.2014',
         locale: {
           toLabel: 'Till'
         }
@@ -54,15 +41,46 @@ angular.module('app', ['nDaterangepicker'])
        }*/
     };
 
+    $scope.nDateSingle = {
+      identifier: 'nDateSingle',
+      name: 'nDateSingle',
+      options: {
+        identifier: 'nDateSingle',
+        format: 'dd.mm.yyyy',
+        singleDatePicker: true,
+        showDropdowns: true
+      },
+      model: {
+        startDate: '01.01.2014',
+        endDate: '01.01.2014'
+      }
+    };
+
     $scope.reset = function(identifier) {
       $scope.$broadcast(identifier + 'Reset');
     };
 
     $scope.$watch('nDate', function(newDateRange, oldDateRange) {
-      console.info('Old date range:');
+      console.info('Old date range (nDate):');
       console.log(oldDateRange);
 
-      console.info('New date range:');
+      console.info('New date range (nDate):');
+      console.log(newDateRange);
+    }, true);
+
+    $scope.$watch('nDateShort', function(newDateRange, oldDateRange) {
+      console.info('Old date range (nDateShort):');
+      console.log(oldDateRange);
+
+      console.info('New date range (nDateShort):');
+      console.log(newDateRange);
+    }, true);
+
+    $scope.$watch('nDateSingle', function(newDateRange, oldDateRange) {
+      console.info('Old date range (nDateSingle):');
+      console.log(oldDateRange);
+
+      console.info('New date range (nDateSingle):');
       console.log(newDateRange);
     }, true);
   })

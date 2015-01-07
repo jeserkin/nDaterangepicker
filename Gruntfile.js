@@ -37,6 +37,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', []);
-  grunt.registerTask('prod', ['concat:prod', 'uglify']);
+  grunt.registerTask('default', ['concat:prod', 'uglify']);
 };

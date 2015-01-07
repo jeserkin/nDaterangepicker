@@ -422,6 +422,7 @@
           identifier: '@',
           name: '@',
           withBtn: '@',
+          resetable: '@',
           model: '=',
           options: '='
         },
@@ -444,9 +445,20 @@
                 template;
           }
 
+          if (tAttrs.resetable == "true") {
+            template += '<div class="input-group">' +
+              '<button type="button" class="btn btn-link" title="Reset" ng-click="reset()" ng-show="model.startDate != null">Reset</button>' +
+            '</div>';
+          }
+
           template += '</div>';
 
           return template;
+        },
+        link: function(scope, iElement, iAttrs, controller, transcludeFn) {
+          scope.reset = function() {
+            scope.$broadcast(scope.identifier + 'Reset');
+          };
         }
       };
     })
@@ -522,10 +534,16 @@
           });
 
           ngModelCtrl.$formatters.push(function(value) {
+            var picker = _getPicker();
+
             if (value && value.startDate && value.endDate) {
-              var picker = _getPicker();
               picker.setStartDate(value.startDate);
               picker.setEndDate(value.endDate);
+              return value;
+            }
+            else if (value && value.startDate) {
+              picker.setStartDate(value.startDate);
+              picker.setEndDate(value.startDate);
               return value;
             }
 
@@ -580,8 +598,17 @@
           _formatted = function(viewVal) {
             var f = function(date) {
               return _getMoment(date).format(scope.internalOptions.format);
-            };
-            return [f(viewVal.startDate), f(viewVal.endDate)].join(scope.internalOptions.separator);
+            },
+            result = '';
+
+            if (scope.internalOptions.singleDatePicker) {
+              result = f(viewVal.startDate);
+            }
+            else {
+              result = [f(viewVal.startDate), f(viewVal.endDate)].join(scope.internalOptions.separator);
+            }
+
+            return result;
           };
 
           _getMoment = function(date) {
