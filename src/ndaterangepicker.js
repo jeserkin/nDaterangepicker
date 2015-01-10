@@ -486,6 +486,7 @@
           var el = angular.element(iElement),
             _init,
             _getPicker,
+            _setViewValue,
 
             _formatted,
             _getMoment,
@@ -501,37 +502,36 @@
           }
 
           // Reset date
-          scope.$on(scope.options.identifier + 'Reset', function(event) {
-            return $timeout(function() {
-              return scope.$apply(function() {
-                var picker = _getPicker(),
-                  dateToSet,
-                  currentDate = moment(),
-                  maxDate = scope.internalOptions.maxDate,
-                  minDate = scope.internalOptions.minDate;
+          if (scope.options && scope.options.identifier) {
+            scope.$on(scope.options.identifier + 'Reset', function(event) {
+              return $timeout(function() {
+                return scope.$apply(function() {
+                  var picker = _getPicker(),
+                    dateToSet,
+                    currentDate = moment(),
+                    maxDate = scope.internalOptions.maxDate,
+                    minDate = scope.internalOptions.minDate;
 
-                if (maxDate && typeof maxDate != "undefined" && currentDate.isAfter(maxDate)) {
-                  dateToSet = _getMoment(maxDate);
-                }
-                else if (minDate && typeof minDate != "undefined" && currentDate.isBefore(minDate)) {
-                  dateToSet = _getMoment(minDate);
-                }
-                else {
-                  dateToSet = currentDate;
-                }
+                  if (maxDate && typeof maxDate != "undefined" && currentDate.isAfter(maxDate)) {
+                    dateToSet = _getMoment(maxDate);
+                  }
+                  else if (minDate && typeof minDate != "undefined" && currentDate.isBefore(minDate)) {
+                    dateToSet = _getMoment(minDate);
+                  }
+                  else {
+                    dateToSet = currentDate;
+                  }
 
-                picker.setStartDate(dateToSet.format(scope.internalOptions.format));
-                picker.setEndDate(dateToSet.format(scope.internalOptions.format));
+                  picker.setStartDate(dateToSet.format(scope.internalOptions.format));
+                  picker.setEndDate(dateToSet.format(scope.internalOptions.format));
 
-                ngModelCtrl.$setViewValue({
-                  startDate: null,
-                  endDate: null
+                  _setViewValue(null, null);
+
+                  return ngModelCtrl.$render();
                 });
-
-                return ngModelCtrl.$render();
               });
             });
-          });
+          }
 
           ngModelCtrl.$formatters.push(function(value) {
             var picker = _getPicker();
@@ -539,11 +539,13 @@
             if (value && value.startDate && value.endDate) {
               picker.setStartDate(value.startDate);
               picker.setEndDate(value.endDate);
+
               return value;
             }
-            else if (value && value.startDate) {
-              picker.setStartDate(value.startDate);
-              picker.setEndDate(value.startDate);
+            else if (value) {
+              picker.setStartDate(value);
+              picker.setEndDate(value);
+
               return value;
             }
 
@@ -551,11 +553,12 @@
           });
 
           ngModelCtrl.$parsers.push(function(value) {
-            if (!angular.isObject(value) || !(value.hasOwnProperty('startDate') && value.hasOwnProperty('endDate'))) {
+            if (scope.internalOptions.singleDatePicker) {
+              return value;
+            }
+            else if (!angular.isObject(value) || !(value.hasOwnProperty('startDate') && value.hasOwnProperty('endDate'))) {
               return ngModelCtrl.$modelValue;
             }
-
-            // @TODO: After date change do some validating here if needed
 
             return value;
           });
@@ -581,10 +584,8 @@
             return el.daterangepicker(scope.internalOptions, function(start, end, label) {
               return $timeout(function() {
                 return scope.$apply(function() {
-                  ngModelCtrl.$setViewValue({
-                    startDate: _toType(start),
-                    endDate: _toType(end)
-                  });
+                  _setViewValue(start, end);
+
                   return ngModelCtrl.$render();
                 });
               });
@@ -595,6 +596,18 @@
             return el.data('daterangepicker');
           };
 
+          _setViewValue = function(startDate, endDate) {
+            if (!scope.internalOptions.singleDatePicker) {
+              ngModelCtrl.$setViewValue({
+                startDate: startDate !== null ? _toType(startDate) : null,
+                endDate: endDate !== null ? _toType(endDate) : null
+              });
+            }
+            else {
+              ngModelCtrl.$setViewValue(startDate !== null ? _toType(startDate) : null);
+            }
+          };
+
           _formatted = function(viewVal) {
             var f = function(date) {
               return _getMoment(date).format(scope.internalOptions.format);
@@ -602,7 +615,7 @@
             result = '';
 
             if (scope.internalOptions.singleDatePicker) {
-              result = f(viewVal.startDate);
+              result = f(viewVal);
             }
             else {
               result = [f(viewVal.startDate), f(viewVal.endDate)].join(scope.internalOptions.separator);
@@ -649,13 +662,16 @@
           };
 
           _validate = function(value) {
-            if (scope.internalOptions.minDate && value.startDate) {
-              _validateMin(scope.internalOptions.minDate, value.startDate);
+            var startDate = typeof value.startDate != 'undefined' ? value.startDate : value,
+              endDate = typeof value.endDate != 'undefined' ? value.endDate : value;
+
+            if (scope.internalOptions.minDate && startDate) {
+              _validateMin(scope.internalOptions.minDate, startDate);
             } else {
               ngModelCtrl.$setValidity('minDate', true);
             }
-            if (scope.internalOptions.maxDate && value.endDate) {
-              _validateMax(scope.internalOptions.maxDate, value.endDate);
+            if (scope.internalOptions.maxDate && endDate) {
+              _validateMax(scope.internalOptions.maxDate, endDate);
             } else {
               ngModelCtrl.$setValidity('maxDate', true);
             }
@@ -688,10 +704,7 @@
           el.on('apply.daterangepicker', function(event, picker) {
             return $timeout(function() {
               return scope.$apply(function() {
-                ngModelCtrl.$setViewValue({
-                  startDate: _toType(picker.startDate),
-                  endDate: _toType(picker.endDate)
-                });
+                _setViewValue(picker.startDate, picker.endDate);
 
                 return ngModelCtrl.$render();
               });

@@ -9,7 +9,7 @@ angular.module('app', ['nDaterangepicker'])
       name: 'nDate',
       options: {
         identifier: 'nDate',
-        format: 'dd.mm.yyyy',
+        format: 'dd.mm.yyyy'
       },
       model: {
         startDate: '01.01.2014',
@@ -48,12 +48,10 @@ angular.module('app', ['nDaterangepicker'])
         identifier: 'nDateSingle',
         format: 'dd.mm.yyyy',
         singleDatePicker: true,
-        showDropdowns: true
+        showDropdowns: true,
+        type: 'moment'
       },
-      model: {
-        startDate: '01.01.2014',
-        endDate: '01.01.2014'
-      }
+      model: '01.01.2014'
     };
 
     $scope.reset = function(identifier) {
