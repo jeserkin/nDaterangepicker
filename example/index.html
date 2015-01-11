@@ -40,14 +40,6 @@
         <hr />
 
         <form class="form-horizontal" role="form" ng-controller="AngularCtrl">
-          <h2>Shorthand directive</h2>
-
-          <div class="form-group well">
-            <div class="col-xs-3">
-              <shorthand-date-range-picker identifier="{{nDateShort.identifier}}" name="{{nDateShort.name}}" model="nDateShort.model" options="nDateShort.options" with-btn="false" resetable="true"></shorthand-date-range-picker>
-            </div>
-          </div>
-
           <h2>Basic usage</h2>
 
           <div class="form-group well">
@@ -64,6 +56,14 @@
               <div class="input-group">
                 <button type="button" class="btn btn-link" title="Reset" ng-click="reset(nDate.identifier)" ng-show="nDate.model.startDate != null">Reset</button>
               </div>
+            </div>
+          </div>
+
+          <h2>Shorthand directive</h2>
+
+          <div class="form-group well">
+            <div class="col-xs-3">
+              <shorthand-date-range-picker identifier="{{nDateShort.identifier}}" name="{{nDateShort.name}}" model="nDateShort.model" options="nDateShort.options" with-btn="false" resetable="true"></shorthand-date-range-picker>
             </div>
           </div>
 

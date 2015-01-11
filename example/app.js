@@ -36,9 +36,9 @@ angular.module('app', ['nDaterangepicker'])
         endDate: '01.01.2014'
       }
       /*model: {
-       startDate: null,
-       endDate: null
-       }*/
+        startDate: null,
+        endDate: null
+      }*/
     };
 
     $scope.nDateSingle = {
@@ -47,10 +47,10 @@ angular.module('app', ['nDaterangepicker'])
       options: {
         identifier: 'nDateSingle',
         format: 'dd.mm.yyyy',
-        singleDatePicker: true,
         showDropdowns: true,
         type: 'moment'
       },
+      //model: null
       model: '01.01.2014'
     };
 
@@ -59,27 +59,33 @@ angular.module('app', ['nDaterangepicker'])
     };
 
     $scope.$watch('nDate', function(newDateRange, oldDateRange) {
+      console.groupCollapsed();
       console.info('Old date range (nDate):');
       console.log(oldDateRange);
 
       console.info('New date range (nDate):');
       console.log(newDateRange);
+      console.groupEnd();
     }, true);
 
     $scope.$watch('nDateShort', function(newDateRange, oldDateRange) {
+      console.groupCollapsed();
       console.info('Old date range (nDateShort):');
       console.log(oldDateRange);
 
       console.info('New date range (nDateShort):');
       console.log(newDateRange);
+      console.groupEnd();
     }, true);
 
     $scope.$watch('nDateSingle', function(newDateRange, oldDateRange) {
+      console.groupCollapsed();
       console.info('Old date range (nDateSingle):');
       console.log(oldDateRange);
 
       console.info('New date range (nDateSingle):');
       console.log(newDateRange);
+      console.groupEnd();
     }, true);
   })
   .controller('jQueryCtrl', function($scope) {

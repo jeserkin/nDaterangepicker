@@ -39,7 +39,7 @@ angular.module('app', ['nDaterangepicker']);
 
 Prepare model in your controller. Model value, can be one of the listed types `string`, `Date`, `Moment`.
 If you are using `singleDatePicker` mode, then your model **must** be a single value, but if you are using default
- mode (date range picker mode), then the model **must** have `startDate` and `endDate` present:
+ mode (date range picker mode), then the model **must** have `startDate` and `endDate` properties present (be composed only from them):
 
 ```javascript
 // For Date picker
@@ -47,9 +47,6 @@ angular.module('app')
   .controller('SampleCtrl', SampleCtrl);
 
 function SampleCtrl($scope) {
-  $scope.options = {
-    singleDatePicker: true
-  };
   $scope.date = null;
 }
 ```

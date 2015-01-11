@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.3
+ * nDaterangepicker 0.1.4
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -361,16 +361,6 @@
         return this.separator;
       };
 
-      this.setSingleDatePicker = function(singleDatePicker) {
-        this.singleDatePicker = singleDatePicker;
-
-        return this;
-      };
-
-      this.isSingleDatePicker = function() {
-        return this.singleDatePicker;
-      };
-
       this.setParentEl = function(parentEl) {
         this.parentEl = parentEl;
 
@@ -492,14 +482,17 @@
             _init,
             _getPicker,
             _setViewValue,
+            _setIsSingleDatePicker,
 
             _formatted,
             _getMoment,
             _toType,
+            _getDateToSet,
 
             _validate,
             _validateMin,
-            _validateMax;
+            _validateMax,
+            _isEmpty;
 
           // Set as readonly. No need for user to interact with it other than through UI (input fields present inside)
           if (typeof el.attr('readonly') === 'undefined') {
@@ -512,20 +505,7 @@
               return $timeout(function() {
                 return scope.$apply(function() {
                   var picker = _getPicker(),
-                    dateToSet,
-                    currentDate = moment(),
-                    maxDate = scope.internalOptions.maxDate,
-                    minDate = scope.internalOptions.minDate;
-
-                  if (maxDate && typeof maxDate != "undefined" && currentDate.isAfter(maxDate)) {
-                    dateToSet = _getMoment(maxDate);
-                  }
-                  else if (minDate && typeof minDate != "undefined" && currentDate.isBefore(minDate)) {
-                    dateToSet = _getMoment(minDate);
-                  }
-                  else {
-                    dateToSet = currentDate;
-                  }
+                    dateToSet = _getDateToSet();
 
                   picker.setStartDate(dateToSet.format(scope.internalOptions.format));
                   picker.setEndDate(dateToSet.format(scope.internalOptions.format));
@@ -539,22 +519,32 @@
           }
 
           ngModelCtrl.$formatters.push(function(value) {
-            var picker = _getPicker();
+            _setIsSingleDatePicker(value);
+            _init();
 
-            if (value && value.startDate && value.endDate) {
-              picker.setStartDate(value.startDate);
-              picker.setEndDate(value.endDate);
+            var _setRange = function(startDate, endDate) {
+              var picker = _getPicker();
+
+              picker.setStartDate(startDate);
+              picker.setEndDate(endDate);
+            };
+
+            if (_isEmpty(value)) {
+              var dateToSet = _getDateToSet();
+              _setRange(dateToSet, dateToSet);
+
+              return '';
+            }
+            else {
+              if (scope.internalOptions.singleDatePicker) {
+                _setRange(value, value);
+              }
+              else {
+                _setRange(value.startDate, value.endDate);
+              }
 
               return value;
             }
-            else if (value) {
-              picker.setStartDate(value);
-              picker.setEndDate(value);
-
-              return value;
-            }
-
-            return '';
           });
 
           ngModelCtrl.$parsers.push(function(value) {
@@ -569,7 +559,7 @@
           });
 
           ngModelCtrl.$isEmpty = function(value) {
-            return !value || (value.startDate === null || value.endDate === null);
+            return _isEmpty(value);
           };
 
           ngModelCtrl.$render = function() {
@@ -610,6 +600,15 @@
             }
             else {
               ngModelCtrl.$setViewValue(startDate !== null ? _toType(startDate) : null);
+            }
+          };
+
+          _setIsSingleDatePicker = function(value) {
+            if (value) {
+              scope.internalOptions.singleDatePicker = !value.hasOwnProperty('startDate') && !value.hasOwnProperty('endDate');
+            }
+            else {
+              scope.internalOptions.singleDatePicker = true;
             }
           };
 
@@ -666,6 +665,25 @@
             }
           };
 
+          _getDateToSet = function() {
+            var dateToSet,
+              currentDate = moment(),
+              maxDate = scope.internalOptions.maxDate,
+              minDate = scope.internalOptions.minDate;
+
+            if (maxDate && typeof maxDate != "undefined" && currentDate.isAfter(maxDate)) {
+              dateToSet = _getMoment(maxDate);
+            }
+            else if (minDate && typeof minDate != "undefined" && currentDate.isBefore(minDate)) {
+              dateToSet = _getMoment(minDate);
+            }
+            else {
+              dateToSet = currentDate;
+            }
+
+            return dateToSet;
+          };
+
           _validate = function(value) {
             var startDate = typeof value.startDate != 'undefined' ? value.startDate : value,
               endDate = typeof value.endDate != 'undefined' ? value.endDate : value;
@@ -704,7 +722,9 @@
             return valid;
           };
 
-          _init();
+          _isEmpty = function(value) {
+            return !value || (value.startDate === null || value.endDate === null);
+          };
 
           el.on('apply.daterangepicker', function(event, picker) {
             return $timeout(function() {
