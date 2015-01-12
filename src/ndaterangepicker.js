@@ -468,7 +468,6 @@
           }
 
           $scope.internalOptions = angular.extend({}, DateRangePickerService.getList(), {locale: locale}, $scope.options);
-          $scope.internalOptions.format = angular.uppercase($scope.internalOptions.format);
 
           DateRangePickerService.isValidDateType($scope.internalOptions.type);
         },
@@ -519,6 +518,14 @@
 
             var _setRange = function(startDate, endDate) {
               var picker = _getPicker();
+
+              if (!_getMoment(startDate).isValid()) {
+                throw new Error('Either invalid startDate was passed or invalid format. Please check!');
+              }
+
+              if (!_getMoment(endDate).isValid()) {
+                throw new Error('Either invalid endDate was passed or invalid format. Please check!');
+              }
 
               picker.setStartDate(startDate);
               picker.setEndDate(endDate);
