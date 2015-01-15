@@ -1,6 +1,6 @@
 {
   "name": "nDaterangepicker",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Angular.js wrapper for dangrossman/bootstrap-daterangepicker",
   "repository": {
     "type": "git",
@@ -10,6 +10,7 @@
     "grunt": "",
     "grunt-contrib-concat": "",
     "grunt-contrib-uglify": "",
+    "grunt-ng-annotate": "",
     "grunt-karma": "",
     "load-grunt-tasks": "",
     "karma": "",

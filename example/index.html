@@ -9,9 +9,25 @@
   <style>
     .copyleft {
       display: inline-block;
-      -ms-transform: rotate(180deg); /* IE 9 */
-      -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
-      transform: rotate(180deg);
+      -ms-transform:rotate(180deg); /* IE 9 */
+      -webkit-transform:rotate(180deg); /* Chrome, Safari, Opera */
+      transform:rotate(180deg);
+    }
+
+    .input-group.datepicker {
+      width:156px;
+    }
+
+    .input-group.date-range-picker {
+      width:230px;
+    }
+
+    .clear-field {
+      padding:1px 10px !important;
+      position:absolute;
+      right:31px;
+      top:6px;
+      z-index:9;
     }
   </style>
   <script src="../bower_components/jquery/dist/jquery.js"></script>
@@ -83,6 +99,22 @@
               <div class="input-group">
                 <button type="button" class="btn btn-link" title="Reset" ng-click="reset(nDateSingle.identifier)" ng-show="nDateSingle.model.startDate != null || nDateSingle.model != null">Reset</button>
               </div>
+            </div>
+          </div>
+
+          <h2>Additional datepicker directive</h2>
+
+          <div class="form-group well">
+            <div class="col-xs-2">
+              <n-datepicker identifier="additionalDatepickerDirective" model="nDatepicker.model" options="nDatepicker.options"></n-datepicker>
+            </div>
+          </div>
+
+          <h2>Additional daterangepicker directive</h2>
+
+          <div class="form-group well">
+            <div class="col-xs-3">
+              <n-date-rangepicker identifier="additionalDatepickerDirective" model="nDateRangepicker.model" options="nDateRangepicker.options"></n-date-rangepicker>
             </div>
           </div>
         </form>

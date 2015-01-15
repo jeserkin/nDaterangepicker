@@ -6,13 +6,22 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    ngAnnotate: {
+      options: {},
+      ndaterangepicker: {
+        files: {
+          'build/ndaterangepicker.min.js': ['build/ndaterangepicker.js']
+        }
+      }
+    },
+
     uglify: {
       options: {
         banner: "/**\n * nDaterangepicker <%=pkg.version%>\n * @author Eugene Serkin\n * @license MIT License http://opensource.org/licenses/MIT\n */\n"
       },
-      prod: {
+      ndaterangepicker: {
         files: {
-          'build/ndaterangepicker.min.js': ['build/ndaterangepicker.js']
+          'build/ndaterangepicker.min.js': ['build/ndaterangepicker.min.js']
         }
       }
     },
@@ -37,5 +46,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['concat:prod', 'uglify']);
+  grunt.registerTask('default', ['concat:prod', 'ngAnnotate', 'uglify']);
 };
