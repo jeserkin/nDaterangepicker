@@ -106,7 +106,7 @@
 
           <div class="form-group well">
             <div class="col-xs-2">
-              <n-datepicker identifier="additionalDatepickerDirective" model="nDatepicker.model" options="nDatepicker.options"></n-datepicker>
+              <n-datepicker identifier="{{nDatepicker.identifier}}" model="nDatepicker.model" options="nDatepicker.options"></n-datepicker>
             </div>
           </div>
 
@@ -114,7 +114,7 @@
 
           <div class="form-group well">
             <div class="col-xs-3">
-              <n-date-rangepicker identifier="additionalDatepickerDirective" model="nDateRangepicker.model" options="nDateRangepicker.options"></n-date-rangepicker>
+              <n-date-rangepicker model="nDateRangepicker.model" options="nDateRangepicker.options"></n-date-rangepicker>
             </div>
           </div>
         </form>
@@ -243,8 +243,8 @@
   <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="../bower_components/moment/moment.js"></script>
   <script src="../bower_components/bootstrap-daterangepicker-reloaded/daterangepicker.js"></script>
-  <script src="../build/ndaterangepicker.js"></script>
-  <!--<script src="../src/ndaterangepicker.js"></script>-->
+  <!--<script src="../build/ndaterangepicker.js"></script>-->
+  <script src="../src/ndaterangepicker.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

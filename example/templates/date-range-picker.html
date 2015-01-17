@@ -1,7 +1,7 @@
 <div class="input-group date-range-picker">
   <input type="text" id="{{forwardOptions.identifier}}" class="form-control" name="{{name}}" ng-model="model" options="forwardOptions" date-range-picker />
 
-  <button type="button" class="btn btn-link clear-field" title="Clear" ng-click="reset()" ng-show="model.startDate != null">
+  <button type="button" class="btn btn-link clear-field" title="Clear" ng-click="reset()" ng-show="model.startDate != null && forwardOptions.identifier">
     <i class="glyphicon glyphicon-remove"></i>
   </button>
 

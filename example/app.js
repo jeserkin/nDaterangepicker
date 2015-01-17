@@ -62,10 +62,9 @@ function AngularCtrl($scope, DateRangePickerLocaleService, DateRangePickerServic
   };
 
   $scope.nDatepicker = {
+    identifier: 'nDatepicker',
     model: null,
-    options: {
-      identifier: 'nDatepicker'
-    }
+    options: {}
   };
 
   $scope.nDateRangepicker = {
@@ -131,6 +130,10 @@ function nDatepicker(config) {
         format: config.dateFormat,
         singleDatePicker: true
       }, $scope.options);
+
+      if ($scope.identifier && $scope.identifier.length) {
+        $scope.forwardOptions.identifier = $scope.identifier;
+      }
     },
     link: function(scope, iElement, iAttrs, controller) {
       scope.reset = function() {
@@ -157,6 +160,10 @@ function nDateRangepicker(config) {
       $scope.forwardOptions = angular.extend({}, {
         format: config.dateFormat
       }, $scope.options);
+
+      if ($scope.identifier && $scope.identifier.length) {
+        $scope.forwardOptions.identifier = $scope.identifier;
+      }
     },
     link: function(scope, iElement, iAttrs, controller) {
       scope.reset = function() {
