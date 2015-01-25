@@ -755,6 +755,12 @@
             });
           });
         });
+
+        el.keyup(function(e) {
+          if (e.keyCode == 27) { // esc
+            _getPicker().hide();
+          }
+        });
       }
     };
   }

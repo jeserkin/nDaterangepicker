@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.6
+ * nDaterangepicker 0.1.7
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -759,6 +759,12 @@
               return ngModelCtrl.$render();
             });
           });
+        });
+
+        el.keyup(function(e) {
+          if (e.keyCode == 27) { // esc
+            _getPicker().hide();
+          }
         });
       }
     };
