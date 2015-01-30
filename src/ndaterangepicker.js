@@ -1,8 +1,7 @@
 'use strict';
 
 (function(angular) {
-  angular.module('nDaterangepicker', [])
-    .factory('PropertyUtil', PropertyUtil);
+  angular.module('nDaterangepicker', []);
 
   function PropertyUtil() {
     var getProperties = function(obj) {
@@ -27,7 +26,7 @@
   angular.module('nDaterangepicker')
     .service('DateRangePickerLocaleService', DateRangePickerLocaleService);
 
-  function DateRangePickerLocaleService(PropertyUtil) {
+  function DateRangePickerLocaleService() {
     this.applyLabel = 'Apply';
     this.cancelLabel = 'Cancel';
     this.fromLabel = 'From';
@@ -129,14 +128,14 @@
     };
 
     this.getList = function() {
-      return PropertyUtil.getProperties(this);
+      return (PropertyUtil()).getProperties(this);
     };
   }
 
   angular.module('nDaterangepicker')
     .service('DateRangePickerService', DateRangePickerService);
 
-  function DateRangePickerService(PropertyUtil) {
+  function DateRangePickerService() {
     this.startDate;
     this.endDate;
     this.minDate;
@@ -412,7 +411,7 @@
     };
 
     this.getList = function() {
-      return PropertyUtil.getProperties(this);
+      return (PropertyUtil()).getProperties(this);
     };
   }
 
@@ -470,6 +469,7 @@
   angular.module('nDaterangepicker')
     .directive('dateRangePicker', dateRangePicker);
 
+  /* @ngInject */
   function dateRangePicker($timeout, DateRangePickerService, DateRangePickerLocaleService) {
     return {
       restrict: 'A',
@@ -531,8 +531,13 @@
         }
 
         ngModelCtrl.$formatters.push(function(value) {
-          _setIsSingleDatePicker(value);
-          _init();
+          if (angular.isUndefined(_getPicker())) {
+            _setIsSingleDatePicker(value);
+            _init();
+          }
+          else {
+            return value;
+          }
 
           var _setRange = function(startDate, endDate) {
             var picker = _getPicker();
