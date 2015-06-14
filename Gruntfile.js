@@ -6,6 +6,17 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    // Automatically inject Bower components into the app
+    wiredep: {
+      app: {
+        src: ['example/index.html']
+      },
+      test: {
+        src: 'karma.conf.js',
+        ignorePath:  /\.\.\//
+      }
+    },
+
     ngAnnotate: {
       options: {},
       ndaterangepicker: {
@@ -46,5 +57,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['concat:prod', 'ngAnnotate', 'uglify']);
+  grunt.registerTask('default', ['wiredep', 'concat:prod', 'ngAnnotate', 'uglify']);
 };

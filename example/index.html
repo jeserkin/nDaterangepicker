@@ -3,34 +3,23 @@
 <head>
   <meta charset="utf-8">
   <title>nDaterangepicker Demo</title>
+  <!-- bower:css -->
+  <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" />
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
-  <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker-reloaded/daterangepicker-bs3.css" />
+  <!-- endbower -->
   <link rel="stylesheet" href="sticky-footer-navbar.css" />
-  <style>
-    .copyleft {
-      display: inline-block;
-      -ms-transform:rotate(180deg); /* IE 9 */
-      -webkit-transform:rotate(180deg); /* Chrome, Safari, Opera */
-      transform:rotate(180deg);
-    }
-
-    .input-group.datepicker {
-      width:156px;
-    }
-
-    .input-group.date-range-picker {
-      width:230px;
-    }
-
-    .clear-field {
-      padding:1px 10px !important;
-      position:absolute;
-      right:31px;
-      top:6px;
-      z-index:9;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
+  <!-- bower:js -->
   <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/moment/moment.js"></script>
+  <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <!-- endbower -->
+
+  <!--<script src="../build/ndaterangepicker.js"></script>-->
+  <script src="../src/ndaterangepicker.js"></script>
+  <script src="app.js"></script>
 </head>
 <body>
   <nav class="navbar navbar-default navbar-static-top" role="navigation">
@@ -239,12 +228,5 @@
       <p class="text-muted"><span class="copyleft">&copy;</span> 2014-2015 <a href="https://github.com/jeserkin/nDaterangepicker">nDaterangepicker</a></p>
     </div>
   </footer>
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="../bower_components/moment/moment.js"></script>
-  <script src="../bower_components/bootstrap-daterangepicker-reloaded/daterangepicker.js"></script>
-  <script src="../build/ndaterangepicker.js"></script>
-  <!--<script src="../src/ndaterangepicker.js"></script>-->
-  <script src="app.js"></script>
 </body>
 </html>
