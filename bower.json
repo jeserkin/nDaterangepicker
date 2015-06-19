@@ -1,6 +1,6 @@
 {
   "name": "nDaterangepicker",
-  "version": "0.1.9",
+  "version": "0.1.9-rc.0",
   "main": "build/ndaterangepicker.js",
   "ignore": [
     "**/.*",
@@ -17,6 +17,6 @@
   "dependencies": {
     "angular": "^1.2.25",
     "bootstrap-daterangepicker": "^1.3.21",
-    "bootstrap": "^3.0.0"
+    "bootstrap": "~3.0.0"
   }
 }

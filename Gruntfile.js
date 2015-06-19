@@ -31,6 +31,17 @@ module.exports = function(grunt) {
         banner: "/**\n * nDaterangepicker <%=pkg.version%>\n * @author Eugene Serkin\n * @license MIT License http://opensource.org/licenses/MIT\n */\n"
       },
       ndaterangepicker: {
+        options: {
+          mangle: false,
+          compress: false,
+          preserveComments: false,
+          beautify: true
+        },
+        files: {
+          'build/ndaterangepicker.js': ['build/ndaterangepicker.js']
+        }
+      },
+      ndaterangepickerMin: {
         files: {
           'build/ndaterangepicker.min.js': ['build/ndaterangepicker.min.js']
         }
