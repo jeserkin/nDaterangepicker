@@ -451,6 +451,7 @@
             _setViewValue,
             _setIsSingleDatePicker,
             _resetPicker,
+            _resetPickerWithRender,
             _setRange,
 
             _formatted,
@@ -473,14 +474,7 @@
           if (scope.options && scope.options.identifier) {
             scope.$on(scope.options.identifier + 'Reset', function() {
               //$log.log('========== 1 [Reset event] ===========');
-              return $timeout(function() {
-                return scope.$apply(function() {
-                  _resetPicker();
-                  _setViewValue(null, null);
-
-                  return ngModelCtrl.$render();
-                });
-              });
+              return _resetPickerWithRender();
             });
           }
 
@@ -722,6 +716,17 @@
             picker.setStartDate(dateToSet.format(scope.internalOptions.format));
           };
 
+          _resetPickerWithRender = function() {
+            return $timeout(function() {
+              return scope.$apply(function() {
+                _resetPicker();
+                _setViewValue(null, null);
+
+                return ngModelCtrl.$render();
+              });
+            });
+          };
+
           _setRange = function(startDate, endDate) {
             //$log.log('========== 12 [_setRange] ===========');
             var picker = _getPicker();
@@ -941,27 +946,17 @@
 
           el.on('blur', function(e) {
             //$log.log('========== 25 [blur] ===========');
-            if (angular.element('.daterangepicker.show-calendar:visible').length > 0) { // @TODO Better solution?
+            _lastCatchableEvent = e.type;
+            // @TODO Better solution?
+            if (angular.element('.daterangepicker.show-calendar:visible').length > 0) {
               return;
             }
 
-            _lastCatchableEvent = e.type;
             //$log.debug('ModelPlaceholder');
             //$log.debug(_tmpModelPlaceholder);
             if (_tmpModelPlaceholder === null) {
               //$log.log('========== 25.1 ===========');
-              return $timeout(function() {
-                //$log.log('========== 25.2 ===========');
-                return scope.$apply(function() {
-                  //$log.log('========== 25.3 ===========');
-                  _resetPicker();
-                  //$log.log('========== 25.4 ===========');
-                  _setViewValue(null, null);
-                  //$log.log('========== 25.5 ===========');
-
-                  return ngModelCtrl.$render();
-                });
-              });
+              return _resetPickerWithRender();
             }
 
             //$log.debug('UserInput');
@@ -990,6 +985,21 @@
 
             // fallback
             event.stopImmediatePropagation();
+          });
+
+          // @TODO Better solution?
+          angular.element(document).on('click', function(e) {
+            var innerEl = angular.element(e.target),
+              closestTable = innerEl.closest('table'),
+              closestTableParent;
+            
+            if (angular.isDefined(closestTable)) {
+              closestTableParent = closestTable.parent();
+            }
+            
+            if (_lastCatchableEvent === 'blur' && closestTableParent && closestTableParent.hasClass('calendar-date')) {
+              _getPicker().hide();
+            }
           });
         }
       };

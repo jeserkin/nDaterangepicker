@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.9-rc.1
+ * nDaterangepicker 0.1.9-rc.2
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -330,16 +330,10 @@
                 DateRangePickerService.isValidDateType($scope.internalOptions.type);
             },
             link: function(scope, iElement, iAttrs, ngModelCtrl) {
-                var el = angular.element(iElement), _init, _getPicker, _setViewValue, _setIsSingleDatePicker, _resetPicker, _setRange, _formatted, _getMoment, _toType, _getDateToSet, _validate, _validateMin, _validateMax, _isEmpty, _isAcceptableDate, _tmpModelPlaceholder, _userInput, _persistentUserInput, _lastCatchableEvent;
+                var el = angular.element(iElement), _init, _getPicker, _setViewValue, _setIsSingleDatePicker, _resetPicker, _resetPickerWithRender, _setRange, _formatted, _getMoment, _toType, _getDateToSet, _validate, _validateMin, _validateMax, _isEmpty, _isAcceptableDate, _tmpModelPlaceholder, _userInput, _persistentUserInput, _lastCatchableEvent;
                 if (scope.options && scope.options.identifier) {
                     scope.$on(scope.options.identifier + "Reset", function() {
-                        return $timeout(function() {
-                            return scope.$apply(function() {
-                                _resetPicker();
-                                _setViewValue(null, null);
-                                return ngModelCtrl.$render();
-                            });
-                        });
+                        return _resetPickerWithRender();
                     });
                 }
                 ngModelCtrl.$formatters.push(function(modelValue) {
@@ -451,6 +445,15 @@
                     var picker = _getPicker(), dateToSet = _getDateToSet();
                     picker.setEndDate(dateToSet.format(scope.internalOptions.format));
                     picker.setStartDate(dateToSet.format(scope.internalOptions.format));
+                };
+                _resetPickerWithRender = function() {
+                    return $timeout(function() {
+                        return scope.$apply(function() {
+                            _resetPicker();
+                            _setViewValue(null, null);
+                            return ngModelCtrl.$render();
+                        });
+                    });
                 };
                 _setRange = function(startDate, endDate) {
                     var picker = _getPicker();
@@ -583,18 +586,12 @@
                     }
                 });
                 el.on("blur", function(e) {
+                    _lastCatchableEvent = e.type;
                     if (angular.element(".daterangepicker.show-calendar:visible").length > 0) {
                         return;
                     }
-                    _lastCatchableEvent = e.type;
                     if (_tmpModelPlaceholder === null) {
-                        return $timeout(function() {
-                            return scope.$apply(function() {
-                                _resetPicker();
-                                _setViewValue(null, null);
-                                return ngModelCtrl.$render();
-                            });
-                        });
+                        return _resetPickerWithRender();
                     }
                     if (!_isAcceptableDate(_userInput) && _tmpModelPlaceholder !== null) {
                         _setRange(_tmpModelPlaceholder, _tmpModelPlaceholder);
@@ -608,6 +605,15 @@
                         event.cancelBubble = true;
                     }
                     event.stopImmediatePropagation();
+                });
+                angular.element(document).on("click", function(e) {
+                    var innerEl = angular.element(e.target), closestTable = innerEl.closest("table"), closestTableParent;
+                    if (angular.isDefined(closestTable)) {
+                        closestTableParent = closestTable.parent();
+                    }
+                    if (_lastCatchableEvent === "blur" && closestTableParent && closestTableParent.hasClass("calendar-date")) {
+                        _getPicker().hide();
+                    }
                 });
             }
         };
