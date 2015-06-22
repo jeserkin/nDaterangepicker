@@ -1,7 +1,7 @@
 {
   "name": "nDaterangepicker",
-  "version": "0.1.9-rc.2",
-  "main": "build/ndaterangepicker.min.js",
+  "version": "0.1.9-rc.3",
+  "main": "build/ndaterangepicker.js",
   "ignore": [
     "**/.*",
     "node_modules",

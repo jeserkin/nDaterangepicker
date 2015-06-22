@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.9-rc.2
+ * nDaterangepicker 0.1.9-rc.3
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -608,10 +608,10 @@
                 });
                 angular.element(document).on("click", function(e) {
                     var innerEl = angular.element(e.target), closestTable = innerEl.closest("table"), closestTableParent;
-                    if (angular.isDefined(closestTable)) {
+                    if (angular.isDefined(closestTable) && closestTable.length) {
                         closestTableParent = closestTable.parent();
                     }
-                    if (_lastCatchableEvent === "blur" && closestTableParent && closestTableParent.hasClass("calendar-date")) {
+                    if (_lastCatchableEvent === "blur" && (angular.isUndefined(closestTableParent) || closestTableParent && closestTableParent.hasClass("calendar-date"))) {
                         _getPicker().hide();
                     }
                 });

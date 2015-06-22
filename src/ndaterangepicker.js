@@ -993,11 +993,12 @@
               closestTable = innerEl.closest('table'),
               closestTableParent;
             
-            if (angular.isDefined(closestTable)) {
+            if (angular.isDefined(closestTable) && closestTable.length) {
               closestTableParent = closestTable.parent();
             }
             
-            if (_lastCatchableEvent === 'blur' && closestTableParent && closestTableParent.hasClass('calendar-date')) {
+            if (_lastCatchableEvent === 'blur' && (angular.isUndefined(closestTableParent) ||
+              closestTableParent && closestTableParent.hasClass('calendar-date'))) {
               _getPicker().hide();
             }
           });
