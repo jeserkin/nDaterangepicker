@@ -56,8 +56,8 @@ angular.module('app')
         showDropdowns: true,
         type: 'moment'
       },
-      //model: null
-      model: '01.01.2014'
+      model: null
+      //model: '01.01.2014'
     };
 
     $scope.nDatepicker = {
@@ -101,7 +101,7 @@ angular.module('app')
      }, true);*/
 
     $scope.$watch('nDateSingle', function(newDateRange, oldDateRange) {
-      console.groupCollapsed();
+      //console.groupCollapsed();
       console.info('Old date range (nDateSingle):');
       console.log(oldDateRange);
       if (moment.isMoment(oldDateRange.model)) {
@@ -114,7 +114,8 @@ angular.module('app')
         console.log('Moment date: ' + newDateRange.model.format('DD.MM.YYYY'));
       }
 
-      console.groupEnd();
+      //console.groupEnd();
+      console.log('=====================');
     }, true);
   });
 

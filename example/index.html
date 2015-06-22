@@ -7,8 +7,8 @@
 	<link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" />
 	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
 	<!-- endbower -->
-	<link rel="stylesheet" href="sticky-footer-navbar.css" />
-	<link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="sticky-footer-navbar.css"/>
+	<link rel="stylesheet" href="style.css"/>
 	<!-- bower:js -->
 	<script src="../bower_components/jquery/dist/jquery.js"></script>
 	<script src="../bower_components/angular/angular.js"></script>
@@ -17,8 +17,8 @@
 	<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
 	<!-- endbower -->
 
-	<!--<script src="../build/ndaterangepicker.js"></script>-->
-	<script src="../src/ndaterangepicker.js"></script>
+	<script src="../build/ndaterangepicker.js"></script>
+	<!--<script src="../src/ndaterangepicker.js"></script>-->
 	<script src="app.js"></script>
 </head>
 <body>
@@ -41,8 +41,10 @@
 		<div class="col-xs-12">
 			<h1>Usage Examples</h1>
 
-			<h2>AngularJS <small>(with and without shorthand directive)</small></h2>
-			<hr />
+			<h2>AngularJS
+				<small>(with and without shorthand directive)</small>
+			</h2>
+			<hr/>
 
 			<form class="form-horizontal" role="form" ng-controller="AngularCtrl">
 				<!--<h2>Basic usage</h2>
@@ -77,7 +79,8 @@
 				<div class="form-group well">
 					<div class="col-xs-2">
 						<div class="input-group date-range-picker">
-							<input type="text" id="{{nDateSingle.identifier}}" class="form-control" name="{{nDateSingle.name}}" ng-model="nDateSingle.model" options="nDateSingle.options" date-range-picker />
+							<input type="text" id="{{nDateSingle.identifier}}" class="form-control" name="{{nDateSingle.name}}"
+								ng-model="nDateSingle.model" options="nDateSingle.options" date-range-picker/>
 
                 <span class="input-group-btn">
                   <label type="button" class="btn btn-default date" for="{{nDateSingle.identifier}}">
@@ -108,11 +111,11 @@
 				</div>-->
 			</form>
 
-			<hr />
+			<hr/>
 
 			<form class="form-horizontal" role="form" ng-controller="jQueryCtrl">
 				<h2>jQuery</h2>
-				<hr />
+				<hr/>
 
 				<h3>Basic Date Range Picker</h3>
 
@@ -125,7 +128,7 @@
 								</div>
 							</div>
 
-							<input type="text" name="basic" id="basic" class="form-control" value="03/18/2013 - 03/23/2013" />
+							<input type="text" name="basic" id="basic" class="form-control" value="03/18/2013 - 03/23/2013"/>
 						</div>
 					</div>
 				</div>
@@ -141,7 +144,7 @@
 								</div>
 							</div>
 
-							<input type="text" name="basic-single" id="basicSingle" class="form-control" value="03/18/2013" />
+							<input type="text" name="basic-single" id="basicSingle" class="form-control" value="03/18/2013"/>
 						</div>
 					</div>
 				</div>
@@ -157,7 +160,7 @@
 								</div>
 							</div>
 
-							<input type="text" name="date-and-time-range-picker" id="dateAndTimeRangePicker" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM" />
+							<input type="text" name="date-and-time-range-picker" id="dateAndTimeRangePicker" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"/>
 						</div>
 					</div>
 				</div>
@@ -225,7 +228,8 @@
 
 <footer class="footer">
 	<div class="container">
-		<p class="text-muted"><span class="copyleft">&copy;</span> 2014-2015 <a href="https://github.com/jeserkin/nDaterangepicker">nDaterangepicker</a></p>
+		<p class="text-muted"><span class="copyleft">&copy;</span> 2014-2015
+			<a href="https://github.com/jeserkin/nDaterangepicker">nDaterangepicker</a></p>
 	</div>
 </footer>
 </body>

@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.9-rc.0
+ * nDaterangepicker 0.1.9-rc.1
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -330,7 +330,7 @@
                 DateRangePickerService.isValidDateType($scope.internalOptions.type);
             },
             link: function(scope, iElement, iAttrs, ngModelCtrl) {
-                var el = angular.element(iElement), _init, _getPicker, _setViewValue, _setIsSingleDatePicker, _resetPicker, _setRange, _formatted, _getMoment, _toType, _getDateToSet, _validate, _validateMin, _validateMax, _isEmpty, _isAcceptableDate, _tmpModelPlaceholder, _userInput, _lastCatchableEvent;
+                var el = angular.element(iElement), _init, _getPicker, _setViewValue, _setIsSingleDatePicker, _resetPicker, _setRange, _formatted, _getMoment, _toType, _getDateToSet, _validate, _validateMin, _validateMax, _isEmpty, _isAcceptableDate, _tmpModelPlaceholder, _userInput, _persistentUserInput, _lastCatchableEvent;
                 if (scope.options && scope.options.identifier) {
                     scope.$on(scope.options.identifier + "Reset", function() {
                         return $timeout(function() {
@@ -362,20 +362,22 @@
                     }
                     if (!_isAcceptableDate(viewValue)) {
                         _userInput = viewValue;
+                        _persistentUserInput = viewValue;
                         if (_isEmpty(_tmpModelPlaceholder)) {
                             return null;
                         }
-                        return _tmpModelPlaceholder;
+                        return _toType(_tmpModelPlaceholder);
                     } else {
                         _userInput = undefined;
                         _tmpModelPlaceholder = viewValue;
                     }
                     if (scope.internalOptions.singleDatePicker) {
-                        return viewValue;
+                        _setRange(viewValue, viewValue);
+                        return _toType(viewValue);
                     } else if (!angular.isObject(viewValue) || !(viewValue.hasOwnProperty("startDate") && viewValue.hasOwnProperty("endDate"))) {
-                        return ngModelCtrl.$modelValue;
+                        return _toType(ngModelCtrl.$modelValue);
                     }
-                    return viewValue;
+                    return _toType(viewValue);
                 });
                 ngModelCtrl.$isEmpty = function(value) {
                     return _isEmpty(value);
@@ -414,7 +416,7 @@
                     return el.daterangepicker(scope.internalOptions, function(start, end) {
                         return $timeout(function() {
                             return scope.$apply(function() {
-                                var userInputAsMoment = angular.isDefined(_userInput) && _userInput.length > 0 ? moment(_userInput, scope.internalOptions.format) : undefined;
+                                var userInputAsMoment = angular.isDefined(_persistentUserInput) && _persistentUserInput.length > 0 ? moment(_persistentUserInput, scope.internalOptions.format) : undefined;
                                 if (moment.isMoment(start) && start.isValid() && moment.isMoment(end) && end.isValid()) {
                                     if (angular.isUndefined(userInputAsMoment) || userInputAsMoment && start.diff(userInputAsMoment)) {
                                         _setViewValue(start, end);
@@ -546,7 +548,7 @@
                     return valid;
                 };
                 _isEmpty = function(value) {
-                    return value === null || value.length == 0 || (value.startDate === null || value.endDate === null);
+                    return angular.isUndefined(value) || value === null || value.length == 0 || (value.startDate === null || value.endDate === null);
                 };
                 _isAcceptableDate = function(date) {
                     if (angular.isUndefined(date)) {
@@ -555,7 +557,7 @@
                     if (moment.isMoment(date)) {
                         date = date.format(scope.internalOptions.format);
                     }
-                    return new RegExp(scope.internalOptions.formatMask, "g").test(date);
+                    return new RegExp(scope.internalOptions.formatMask, "g").test(date) && _getMoment(date).isValid();
                 };
                 el.on("apply.daterangepicker", function(e, picker) {
                     _lastCatchableEvent = e.type;
@@ -570,6 +572,7 @@
                     _lastCatchableEvent = e.type;
                     if (e.keyCode == 27) {
                         _getPicker().hide();
+                        el.trigger("blur");
                     }
                 });
                 el.on("focus", function(e) {
@@ -596,6 +599,15 @@
                     if (!_isAcceptableDate(_userInput) && _tmpModelPlaceholder !== null) {
                         _setRange(_tmpModelPlaceholder, _tmpModelPlaceholder);
                     }
+                });
+                el.on("keyup.daterangepicker", function(event) {
+                    event = event || window.event;
+                    if (event.stopPropagation) {
+                        event.stopPropagation();
+                    } else {
+                        event.cancelBubble = true;
+                    }
+                    event.stopImmediatePropagation();
                 });
             }
         };

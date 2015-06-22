@@ -466,6 +466,7 @@
 
             _tmpModelPlaceholder,
             _userInput,
+            _persistentUserInput,
             _lastCatchableEvent;
 
           // Reset date
@@ -526,6 +527,7 @@
             if (!_isAcceptableDate(viewValue)) {
               //$log.log('========== 3.2 ===========');
               _userInput = viewValue;
+              _persistentUserInput = viewValue;
 
               if (_isEmpty(_tmpModelPlaceholder)) { // @TODO Is needed?
                 //$log.log('========== 3.3 ===========');
@@ -540,7 +542,7 @@
                 //$log.debug('Moment isValid: ' + _tmpModelPlaceholder.isValid());
               //}
 
-              return _tmpModelPlaceholder;
+              return _toType(_tmpModelPlaceholder);
             }
             else {
               _userInput = undefined;
@@ -549,14 +551,15 @@
 
             if (scope.internalOptions.singleDatePicker) {
               //$log.log('========== 3.5 ===========');
-              return viewValue;
+              _setRange(viewValue, viewValue);
+              return _toType(viewValue);
             }
             else if (!angular.isObject(viewValue) || !(viewValue.hasOwnProperty('startDate') && viewValue.hasOwnProperty('endDate'))) {
               //$log.log('========== 3.6 ===========');
-              return ngModelCtrl.$modelValue;
+              return _toType(ngModelCtrl.$modelValue);
             }
 
-            return viewValue;
+            return _toType(viewValue);
           });
 
           ngModelCtrl.$isEmpty = function(value) {
@@ -645,9 +648,14 @@
                     //$log.debug('Moment isValid: ' + end.isValid());
                   //}
 
-                  var userInputAsMoment = angular.isDefined(_userInput) && _userInput.length > 0
-                    ? moment(_userInput, scope.internalOptions.format)
+                  //$log.debug('Persistent user input');
+                  //$log.debug(_persistentUserInput);
+                  var userInputAsMoment = angular.isDefined(_persistentUserInput) && _persistentUserInput.length > 0
+                    ? moment(_persistentUserInput, scope.internalOptions.format)
                     : undefined;
+
+                  //$log.debug('Persistent user input as moment');
+                  //$log.debug(userInputAsMoment);
 
                   if (moment.isMoment(start) && start.isValid() && moment.isMoment(end) && end.isValid()) {
                     if (angular.isUndefined(userInputAsMoment) || userInputAsMoment && start.diff(userInputAsMoment)) {
@@ -757,15 +765,19 @@
           _getMoment = function(date) {
             //$log.log('========== 14 [_getMoment] ===========');
             if (moment.isMoment(date)) {
+              //$log.log('========== 14.1 ===========');
               return date;
             }
             else {
+              //$log.log('========== 14.2 ===========');
               var result;
 
               if (date instanceof Date) {
+                //$log.log('========== 14.3 ===========');
                 result = moment(date);
               }
               else {
+                //$log.log('========== 14.4 ===========');
                 result = moment(date, scope.internalOptions.format);
               }
 
@@ -779,15 +791,18 @@
 
             switch (scope.internalOptions.type) {
               case 'moment': {
+                //$log.log('========== 15.1 ===========');
                 return momentObj;
               }
 
               case 'date': {
+                //$log.log('========== 15.2 ===========');
                 return momentObj.toDate();
               }
 
               default:
               case 'string': {
+                //$log.log('========== 15.3 ===========');
                 return momentObj.format(scope.internalOptions.format);
               }
             }
@@ -801,12 +816,15 @@
               minDate = scope.internalOptions.minDate;
 
             if (maxDate && currentDate.isAfter(maxDate)) {
+              //$log.log('========== 16.1 ===========');
               dateToSet = _getMoment(maxDate);
             }
             else if (minDate && currentDate.isBefore(minDate)) {
+              //$log.log('========== 16.2 ===========');
               dateToSet = _getMoment(minDate);
             }
             else {
+              //$log.log('========== 16.3 ===========');
               dateToSet = currentDate;
             }
 
@@ -867,7 +885,8 @@
 
           _isEmpty = function(value) {
             //$log.log('========== 20 [_isEmpty] ===========');
-            return value === null || value.length == 0 || (value.startDate === null || value.endDate === null);
+            return angular.isUndefined(value) || value === null || value.length == 0 || (value.startDate === null
+              || value.endDate === null);
           };
 
           _isAcceptableDate = function(date) {
@@ -882,7 +901,7 @@
               date = date.format(scope.internalOptions.format);
             }
 
-            return (new RegExp(scope.internalOptions.formatMask, 'g')).test(date);
+            return (new RegExp(scope.internalOptions.formatMask, 'g')).test(date) && _getMoment(date).isValid();
           };
 
           el.on('apply.daterangepicker', function(e, picker) {
@@ -905,6 +924,7 @@
             if (e.keyCode == 27) { // esc
               //$log.log('========== 23.1 ===========');
               _getPicker().hide();
+              el.trigger('blur');
               //$log.log('========== 23.2 ===========');
             }
           });
@@ -954,6 +974,22 @@
               _setRange(_tmpModelPlaceholder, _tmpModelPlaceholder);
               //$log.log('========== 25.7 ===========');
             }
+          });
+
+          el.on('keyup.daterangepicker', function(event) {
+            event = event || window.event; // cross-browser event
+
+            if (event.stopPropagation) {
+              // W3C standard variant
+              event.stopPropagation();
+            }
+            else {
+              // IE variant
+              event.cancelBubble = true;
+            }
+
+            // fallback
+            event.stopImmediatePropagation();
           });
         }
       };
