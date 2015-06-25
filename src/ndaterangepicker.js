@@ -556,6 +556,19 @@
             return _toType(viewValue);
           });
 
+          ngModelCtrl.$validators.dateRequired = function(modelValue) {
+            if (angular.isDefined(iAttrs.dateRequired)) {
+              var isNotEmpty = !_isEmpty(modelValue);
+
+              ngModelCtrl.$setValidity('required', isNotEmpty);
+              return isNotEmpty;
+            }
+            else {
+              ngModelCtrl.$setValidity('required', true);
+              return true;
+            }
+          };
+
           ngModelCtrl.$isEmpty = function(value) {
             //$log.log('========== 4 [$isEmpty] ===========');
             return _isEmpty(value);
