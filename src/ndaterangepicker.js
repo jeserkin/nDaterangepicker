@@ -138,7 +138,7 @@
       this.minDate;
       this.maxDate;
       this.dateLimit = false;
-      this.timeZone = null;
+      this.timeZone = moment().utcOffset();
       this.showDropdowns = false;
       this.showWeekNumbers = false;
       this.timePicker = false;
@@ -430,10 +430,14 @@
         restrict: 'A',
         require: '^ngModel',
         scope: {
-          options: '='
+          options: '@'
         },
-        controller: function($scope) {
+        controller: function($scope, $parse) {
           var locale = angular.extend({}, DateRangePickerLocaleService.getList());
+
+          if ($scope.options) {
+            $scope.options = $parse($scope.options)();
+          }
 
           if ($scope.options && $scope.options.locale) {
             locale = angular.extend(locale, $scope.options.locale);
@@ -557,13 +561,16 @@
           });
 
           ngModelCtrl.$validators.dateRequired = function(modelValue) {
+            //$log.log('========== 29 [$validators][dateRequired] ===========');
             if (angular.isDefined(iAttrs.dateRequired)) {
+              //$log.log('========== 29.1 ===========');
               var isNotEmpty = !_isEmpty(modelValue);
 
               ngModelCtrl.$setValidity('required', isNotEmpty);
               return isNotEmpty;
             }
             else {
+              //$log.log('========== 29.2 ===========');
               ngModelCtrl.$setValidity('required', true);
               return true;
             }
@@ -730,10 +737,14 @@
           };
 
           _resetPickerWithRender = function() {
+            //$log.log('========== 28 [_resetPickerWithRender] ===========');
             return $timeout(function() {
               return scope.$apply(function() {
+                //$log.log('========== 28.1 ===========');
                 _resetPicker();
+                //$log.log('========== 28.2 ===========');
                 _setViewValue(null, null);
+                //$log.log('========== 28.3 ===========');
 
                 return ngModelCtrl.$render();
               });
@@ -985,13 +996,16 @@
           });
 
           el.on('keyup.daterangepicker', function(event) {
+            //$log.log('========== 26 [keyup.daterangepicker] ===========');
             event = event || window.event; // cross-browser event
 
             if (event.stopPropagation) {
+              //$log.log('========== 26.1 ===========');
               // W3C standard variant
               event.stopPropagation();
             }
             else {
+              //$log.log('========== 26.2 ===========');
               // IE variant
               event.cancelBubble = true;
             }
@@ -1002,16 +1016,19 @@
 
           // @TODO Better solution?
           angular.element(document).on('click', function(e) {
+            //$log.log('========== 27 [document.click] ===========');
             var innerEl = angular.element(e.target),
               closestTable = innerEl.closest('table'),
               closestTableParent;
             
             if (angular.isDefined(closestTable) && closestTable.length) {
+              //$log.log('========== 27.1 ===========');
               closestTableParent = closestTable.parent();
             }
             
             if (_lastCatchableEvent === 'blur' && (angular.isUndefined(closestTableParent) ||
-              closestTableParent && closestTableParent.hasClass('calendar-date'))) {
+              closestTableParent && closestTableParent.hasClass('calendar-date')) && angular.isDefined(_getPicker())) {
+              //$log.log('========== 27.2 ===========');
               _getPicker().hide();
             }
           });
@@ -1020,7 +1037,9 @@
     });
 
   angular.module('nDaterangepicker')
-    .directive('shorthandDateRangePicker', function() {
+    .directive('shorthandDateRangePicker', function($log) {
+      $log.warn('shorthandDateRangePicker directive might not work as expected!');
+
       return {
         restrict: 'E',
         scope: {
@@ -1029,7 +1048,7 @@
           withBtn: '@',
           resetable: '@',
           model: '=',
-          options: '='
+          options: '@'
         },
         template: function(tElement, tAttrs) {
           var template = '<input type="text" id="{{identifier}}" class="form-control" name="{{name}}" ng-model="model" options="options" date-range-picker />';

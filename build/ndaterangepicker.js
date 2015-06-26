@@ -106,7 +106,7 @@
         this.minDate;
         this.maxDate;
         this.dateLimit = false;
-        this.timeZone = null;
+        this.timeZone = moment().utcOffset();
         this.showDropdowns = false;
         this.showWeekNumbers = false;
         this.timePicker = false;
@@ -316,10 +316,13 @@
             restrict: "A",
             require: "^ngModel",
             scope: {
-                options: "="
+                options: "@"
             },
-            controller: function($scope) {
+            controller: function($scope, $parse) {
                 var locale = angular.extend({}, DateRangePickerLocaleService.getList());
+                if ($scope.options) {
+                    $scope.options = $parse($scope.options)();
+                }
                 if ($scope.options && $scope.options.locale) {
                     locale = angular.extend(locale, $scope.options.locale);
                     delete $scope.options.locale;
@@ -621,14 +624,15 @@
                     if (angular.isDefined(closestTable) && closestTable.length) {
                         closestTableParent = closestTable.parent();
                     }
-                    if (_lastCatchableEvent === "blur" && (angular.isUndefined(closestTableParent) || closestTableParent && closestTableParent.hasClass("calendar-date"))) {
+                    if (_lastCatchableEvent === "blur" && (angular.isUndefined(closestTableParent) || closestTableParent && closestTableParent.hasClass("calendar-date")) && angular.isDefined(_getPicker())) {
                         _getPicker().hide();
                     }
                 });
             }
         };
     });
-    angular.module("nDaterangepicker").directive("shorthandDateRangePicker", function() {
+    angular.module("nDaterangepicker").directive("shorthandDateRangePicker", function($log) {
+        $log.warn("shorthandDateRangePicker directive might not work as expected!");
         return {
             restrict: "E",
             scope: {
@@ -637,7 +641,7 @@
                 withBtn: "@",
                 resetable: "@",
                 model: "=",
-                options: "="
+                options: "@"
             },
             template: function(tElement, tAttrs) {
                 var template = '<input type="text" id="{{identifier}}" class="form-control" name="{{name}}" ng-model="model" options="options" date-range-picker />';

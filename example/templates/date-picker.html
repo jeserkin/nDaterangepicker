@@ -1,12 +1,14 @@
 <div class="input-group datepicker">
-  <input type="text" id="{{forwardOptions.identifier}}" class="form-control" name="{{name}}" ng-model="model" options="forwardOptions" date-range-picker />
+  <input type="text" id="{{resetIdentifier}}" class="form-control" name="{{name}}" ng-model="model.vm"
+         options="{{forwardOptions}}" date-range-picker />
 
-  <button type="button" class="btn btn-link clear-field" title="Clear" ng-click="reset()" ng-show="model != null && forwardOptions.identifier">
+  <button type="button" class="btn btn-link clear-field" title="Clear" ng-click="reset()"
+          ng-show="model.vm && resetIdentifier">
     <i class="glyphicon glyphicon-remove"></i>
   </button>
 
   <span class="input-group-btn">
-    <label type="button" class="btn btn-default date" for="{{forwardOptions.identifier}}">
+    <label type="button" class="btn btn-default date" for="{{resetIdentifier}}">
       <i class="glyphicon glyphicon-calendar"></i>
     </label>
   </span>

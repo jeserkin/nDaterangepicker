@@ -7,8 +7,14 @@ angular.module('app', ['nDaterangepicker'])
 
 angular.module('app')
   .controller('AngularCtrl', function($scope, DateRangePickerLocaleService, DateRangePickerService) {
+    moment.locale('et');
+    moment.tz.setDefault('Europe/Tallinn');
+
     DateRangePickerLocaleService.setFromLabel('Since');
-    DateRangePickerService.setFormatMask('^[0-3][0-9].[0-1][0-9].[0-9]{4}$');
+    DateRangePickerService
+      .setFormatMask('^[0-3][0-9].[0-1][0-9].[0-9]{4}$')
+      .setTimeZone(moment().utcOffset());
+
 
     $scope.nDate = {
       identifier: 'nDate',
@@ -56,8 +62,12 @@ angular.module('app')
         showDropdowns: true,
         type: 'moment'
       },
-      model: null
-      //model: '01.01.2014'
+      //model: null
+      model: '01.01.2014'
+      /*model: {
+        startDate: null,
+        filldate: null
+      }*/
     };
 
     $scope.nDatepicker = {
@@ -127,7 +137,7 @@ angular.module('app')
         identifier: '@',
         name: '@',
         model: '=',
-        options: '='
+        options: '@'
       },
       templateUrl: 'templates/date-picker.html',
       controller: function($scope) {
@@ -139,11 +149,22 @@ angular.module('app')
         if ($scope.identifier && $scope.identifier.length) {
           $scope.forwardOptions.identifier = $scope.identifier;
         }
+
+        $scope.resetIdentifier = $scope.forwardOptions.identifier;
+        $scope.forwardOptions = angular.toJson($scope.forwardOptions);
+
+        $scope.vm = {
+          model: $scope.model
+        };
       },
       link: function(scope) {
         scope.reset = function() {
-          scope.$broadcast(scope.forwardOptions.identifier + 'Reset');
+          scope.$broadcast(scope.resetIdentifier + 'Reset');
         };
+
+        scope.$watch('vm', function(newValue) {
+          scope.model = newValue.model;
+        }, true);
       }
     };
   });
