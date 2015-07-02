@@ -426,6 +426,13 @@
 
   angular.module('nDaterangepicker')
     .directive('dateRangePicker', function($timeout, DateRangePickerService, DateRangePickerLocaleService, $log) {
+      /*function printMoment(viewValue, format) {
+        if (moment.isMoment(viewValue)) {
+          //$log.debug('Moment date: ' + viewValue.format(format));
+          //$log.debug('Moment isValid: ' + viewValue.isValid());
+        }
+      }*/
+
       return {
         restrict: 'A',
         require: '^ngModel',
@@ -512,10 +519,7 @@
             //$log.log('========== 3 [$parsers] ===========');
             //$log.debug('viewValue');
             //$log.debug(viewValue);
-            //if (moment.isMoment(viewValue)) {
-              //$log.debug('Moment date: ' + viewValue.format(scope.internalOptions.format));
-              //$log.debug('Moment isValid: ' + viewValue.isValid());
-            //}
+            //printMoment(viewValue, scope.internalOptions.format);
             if (viewValue === null || !moment.isMoment(viewValue) && viewValue.length == 0) {
               //$log.log('========== 3.1 ===========');
               _tmpModelPlaceholder = null;
@@ -535,10 +539,7 @@
               //$log.log('========== 3.4 ===========');
               //$log.debug('ModelPlaceholder');
               //$log.debug(_tmpModelPlaceholder);
-              //if (moment.isMoment(_tmpModelPlaceholder)) {
-                //$log.debug('Moment date: ' + _tmpModelPlaceholder.format(scope.internalOptions.format));
-                //$log.debug('Moment isValid: ' + _tmpModelPlaceholder.isValid());
-              //}
+              //printMoment(_tmpModelPlaceholder, scope.internalOptions.format);
 
               return _toType(_tmpModelPlaceholder);
             }
@@ -651,16 +652,10 @@
                   //$log.log('========== 7.1 ===========');
                   //$log.debug('Received start date:');
                   //$log.debug(start);
-                  //if (moment.isMoment(start)) {
-                    //$log.debug('Moment date: ' + start.format(scope.internalOptions.format));
-                    //$log.debug('Moment isValid: ' + start.isValid());
-                  //}
+                  //printMoment(start, scope.internalOptions.format);
                   //$log.debug('Received end date:');
                   //$log.debug(end);
-                  //if (moment.isMoment(end)) {
-                    //$log.debug('Moment date: ' + end.format(scope.internalOptions.format));
-                    //$log.debug('Moment isValid: ' + end.isValid());
-                  //}
+                  //printMoment(end, scope.internalOptions.format);
 
                   //$log.debug('Persistent user input');
                   //$log.debug(_persistentUserInput);
@@ -973,6 +968,7 @@
             _lastCatchableEvent = e.type;
             // @TODO Better solution?
             if (angular.element('.daterangepicker.show-calendar:visible').length > 0) {
+              //$log.log('========== 25.0 ===========');
               return;
             }
 
@@ -1015,6 +1011,7 @@
           });
 
           // @TODO Better solution?
+          // @NB! VERY FRAGILE
           angular.element(document).on('click', function(e) {
             //$log.log('========== 27 [document.click] ===========');
             var innerEl = angular.element(e.target),
@@ -1027,7 +1024,7 @@
             }
             
             if (_lastCatchableEvent === 'blur' && (angular.isUndefined(closestTableParent) ||
-              closestTableParent && closestTableParent.hasClass('calendar-date')) && angular.isDefined(_getPicker())) {
+              closestTableParent && !closestTableParent.hasClass('calendar-date')) && angular.isDefined(_getPicker())) {
               //$log.log('========== 27.2 ===========');
               _getPicker().hide();
             }
@@ -1038,7 +1035,7 @@
 
   angular.module('nDaterangepicker')
     .directive('shorthandDateRangePicker', function($log) {
-      $log.warn('shorthandDateRangePicker directive might not work as expected!');
+      //$log.warn('shorthandDateRangePicker directive might not work as expected!');
 
       return {
         restrict: 'E',

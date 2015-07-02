@@ -1,19 +1,81 @@
 'use strict';
 
 angular.module('app', ['nDaterangepicker'])
+//angular.module('app', [])
+  .decorator('$log', function($delegate) {
+    var timeStampFormat = 'DD.MM.YYYY HH:mm:ss.SSS';
+
+    function overwriteLog() {
+      // Save the original $log.log()
+      var logFn = $delegate.log;
+
+      $delegate.log = function() {
+        var args = [].slice.call(arguments),
+          now = moment();
+
+        // Prepend timestamp
+        args[0] = now.format(timeStampFormat) + ' - ' + args[0];
+
+        // Call the original with the output prepended with formatted timestamp
+        logFn.apply(null, args)
+      };
+    }
+
+    function overwriteDebug() {
+      // Save the original $log.debug()
+      var debugFn = $delegate.debug;
+
+      $delegate.debug = function() {
+        var args = [].slice.call(arguments),
+          now = moment();
+
+        // Prepend timestamp
+        args[0] = now.format(timeStampFormat) + ' - ' + args[0];
+
+        // Call the original with the output prepended with formatted timestamp
+        debugFn.apply(null, args)
+      };
+    }
+
+    function overwriteInfo() {
+      // Save the original $log.info()
+      var infoFn = $delegate.info;
+
+      $delegate.info = function() {
+        var args = [].slice.call(arguments),
+          now = moment();
+
+        // Prepend timestamp
+        args[0] = now.format(timeStampFormat) + ' - ' + args[0];
+
+        // Call the original with the output prepended with formatted timestamp
+        infoFn.apply(null, args)
+      };
+    }
+
+    overwriteLog();
+    overwriteDebug();
+    overwriteInfo();
+
+    return $delegate;
+  });
+
+angular.module('app')
   .value('config', {
     dateFormat: 'DD.MM.YYYY'
   });
 
 angular.module('app')
   .controller('AngularCtrl', function($scope, DateRangePickerLocaleService, DateRangePickerService) {
-    moment.locale('et');
-    moment.tz.setDefault('Europe/Tallinn');
+  //.controller('AngularCtrl', function($scope) {
+    //moment.locale('et');
+    //moment.tz.setDefault('Europe/Tallinn');
 
     DateRangePickerLocaleService.setFromLabel('Since');
     DateRangePickerService
-      .setFormatMask('^[0-3][0-9].[0-1][0-9].[0-9]{4}$')
-      .setTimeZone(moment().utcOffset());
+      .setFormatMask('^[0-3][0-9].[0-1][0-9].[0-9]{4}$');
+      //.setFormatMask('^[0-3][0-9].[0-1][0-9].[0-9]{4}$')
+      //.setTimeZone(moment().utcOffset());
 
 
     $scope.nDate = {
@@ -63,7 +125,7 @@ angular.module('app')
         type: 'moment'
       },
       //model: null
-      model: '01.01.2014'
+      model: '02.01.2014'
       /*model: {
         startDate: null,
         filldate: null
@@ -73,7 +135,9 @@ angular.module('app')
     $scope.nDatepicker = {
       identifier: 'nDatepicker',
       model: null,
-      options: {}
+      options: {
+        showDropdowns: true
+      }
     };
 
     $scope.nDateRangepicker = {
@@ -137,7 +201,7 @@ angular.module('app')
         identifier: '@',
         name: '@',
         model: '=',
-        options: '@'
+        options: '='
       },
       templateUrl: 'templates/date-picker.html',
       controller: function($scope) {
@@ -208,7 +272,11 @@ angular.module('app')
     });
 
     // Basic Single Date Picker
-    $('#basicSingle').daterangepicker({singleDatePicker: true}, function(start, end, label) {
+    $('#basicSingle').daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true
+    },
+    function(start, end, label) {
       console.log(start.toISOString(), end.toISOString(), label);
     });
 

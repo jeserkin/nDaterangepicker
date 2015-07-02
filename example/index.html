@@ -49,77 +49,10 @@
       <hr/>
 
       <form class="form-horizontal" role="form" ng-controller="AngularCtrl">
-        <h2>Basic usage</h2>
-
-        <div class="form-group well">
-          <div class="col-xs-3">
-            <div class="input-group date-range-picker">
-              <input type="text" id="{{nDate.identifier}}" class="form-control" name="{{nDate.name}}"
-                ng-model="nDate.model" options="nDate.options" date-range-picker />
-
-              <span class="input-group-btn">
-                <label type="button" class="btn btn-default date" for="{{nDate.identifier}}">
-                  <i class="glyphicon glyphicon-calendar"></i>
-                </label>
-              </span>
-            </div>
-            <div class="input-group">
-              <button type="button" class="btn btn-link" title="Reset" ng-click="reset(nDate.identifier)"
-                ng-show="nDate.model.startDate != null">Reset</button>
-            </div>
-          </div>
-        </div>
-
-        <h2>Shorthand directive</h2>
-
-        <div class="form-group well">
-          <div class="col-xs-3">
-            <shorthand-date-range-picker identifier="{{nDateShort.identifier}}" name="{{nDateShort.name}}"
-              model="nDateShort.model" options="nDateShort.options" with-btn="false" resetable="true">
-            </shorthand-date-range-picker>
-          </div>
-        </div>
-
-        <h2>Single datepicker</h2>
-
-        <div class="form-group well">
-          <div class="col-xs-3">
-            <div class="input-group date-range-picker" ng-class="{'has-error': form[nDateSingle.name].$error.required}">
-              <input type="text" id="{{nDateSingle.identifier}}" class="form-control" name="{{nDateSingle.name}}"
-                     ng-model="nDateSingle.model" options="{{nDateSingle.options}}" date-range-picker date-required />
-
-                <span class="input-group-btn">
-                  <label type="button" class="btn btn-default date" for="{{nDateSingle.identifier}}">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                  </label>
-                </span>
-            </div>
-            <div class="input-group">
-              <button type="button" class="btn btn-link" title="Reset"
-                      ng-click="reset(nDateSingle.identifier)"
-                      ng-show="nDateSingle.model != null || nDateSingle.model.startDate != null">
-                Reset
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <h2>Additional datepicker directive</h2>
-
-        <div class="form-group well">
-          <div class="col-xs-2">
-            <n-datepicker identifier="{{nDatepicker.identifier}}" model="nDatepicker.model"
-              options="nDatepicker.options"></n-datepicker>
-          </div>
-        </div>
-
-        <!--<h2>Additional daterangepicker directive</h2>
-
-        <div class="form-group well">
-          <div class="col-xs-3">
-            <n-date-rangepicker model="nDateRangepicker.model" options="nDateRangepicker.options"></n-date-rangepicker>
-          </div>
-        </div>-->
+        <!--<div ng-include="'segments/basic-usage.html'"></div>-->
+        <!--<div ng-include="'segments/shorthand-directive.html'"></div>-->
+        <div ng-include="'segments/single-datepicker.html'"></div>
+        <div ng-include="'segments/additional-datepicker-directive.html'"></div>
       </form>
 
       <hr/>
@@ -155,7 +88,7 @@
                 </div>
               </div>
 
-              <input type="text" name="basic-single" id="basicSingle" class="form-control" value="03/18/2013"/>
+              <input type="text" id="basicSingle" name="basic-single" class="form-control" value="10/24/1984" />
             </div>
           </div>
         </div>

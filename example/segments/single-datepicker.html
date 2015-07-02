@@ -1,0 +1,23 @@
+<h2>Single datepicker</h2>
+
+<div class="form-group well">
+  <div class="col-xs-3">
+    <div class="input-group date-range-picker" ng-class="{'has-error': form[nDateSingle.name].$error.required}">
+      <input type="text" id="{{nDateSingle.identifier}}" class="form-control" name="{{nDateSingle.name}}"
+             ng-model="nDateSingle.model" options="{{nDateSingle.options}}" date-range-picker date-required />
+
+      <span class="input-group-btn">
+        <label type="button" class="btn btn-default date" for="{{nDateSingle.identifier}}">
+          <i class="glyphicon glyphicon-calendar"></i>
+        </label>
+      </span>
+    </div>
+    <div class="input-group">
+      <button type="button" class="btn btn-link" title="Reset"
+              ng-click="reset(nDateSingle.identifier)"
+              ng-show="nDateSingle.model != null || nDateSingle.model.startDate != null">
+        Reset
+      </button>
+    </div>
+  </div>
+</div>
