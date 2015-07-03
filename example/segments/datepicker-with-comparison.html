@@ -1,0 +1,24 @@
+<h2>Datepicker comparison</h2>
+
+<div class="form-group well">
+  <div class="col-xs-3">
+    <div class="input-group date-range-picker">
+      <input type="text" id="{{nDateRangepickerComparison.identifier}}" class="form-control" name="{{nDateRangepickerComparison.name}}"
+             ng-model="nDateRangepickerComparison.model" ng-model-options="{allowInvalid: true}"
+             date-range-picker options="{{nDateRangepickerComparison.options}}"
+             not-earlier-than="{{nDateRangepickerComparison.notEarlierThan}}"
+             not-later-than="{{nDateRangepickerComparison.notLaterThan}}" />
+
+      <span class="input-group-btn">
+        <label type="button" class="btn btn-default date" for="{{nDateRangepickerComparison.identifier}}">
+          <i class="glyphicon glyphicon-calendar"></i>
+        </label>
+      </span>
+    </div>
+    <div class="input-group">
+      <button type="button" class="btn btn-link" title="Reset" ng-click="reset(nDateRangepickerComparison.identifier)"
+              ng-show="nDateRangepickerComparison.model">Reset
+      </button>
+    </div>
+  </div>
+</div>

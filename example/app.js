@@ -85,10 +85,11 @@ angular.module('app')
         identifier: 'nDate',
         format: 'DD.MM.YYYY'
       },
-      model: {
+      model: '01.01.2014'
+      /*model: {
         startDate: '01.01.2014',
         endDate: '01.01.2014'
-      }
+      }*/
     };
 
     $scope.nDateShort = {
@@ -105,10 +106,11 @@ angular.module('app')
        startDate: moment('01.01.2014', angular.uppercase('dd.mm.yyyy')),
        endDate: moment('01.01.2015', angular.uppercase('dd.mm.yyyy'))
        }*/
-      model: {
+      model: '01.01.2014'
+      /*model: {
         startDate: '01.01.2014',
         endDate: '01.01.2014'
-      }
+      }*/
       /*model: {
        startDate: null,
        endDate: null
@@ -125,7 +127,7 @@ angular.module('app')
         type: 'moment'
       },
       //model: null
-      model: '02.01.2014'
+      model: '01.01.2014'
       /*model: {
         startDate: null,
         filldate: null
@@ -135,9 +137,7 @@ angular.module('app')
     $scope.nDatepicker = {
       identifier: 'nDatepicker',
       model: null,
-      options: {
-        showDropdowns: true
-      }
+      options: {}
     };
 
     $scope.nDateRangepicker = {
@@ -148,6 +148,18 @@ angular.module('app')
       options: {
         identifier: 'nDateRangepicker'
       }
+    };
+
+    $scope.nDateRangepickerComparison = {
+      identifier: 'nDateRangepickerComparison',
+      name: 'nDateRangepickerComparison',
+      model: '03.03.2015',
+      options: {
+        format: 'DD.MM.YYYY',
+        identifier: 'nDateRangepickerComparison'
+      },
+      notEarlierThan: (moment().subtract(4, 'month').subtract(1, 'days')),
+      notLaterThan: new Date()
     };
 
     $scope.reset = function(identifier) {
@@ -174,7 +186,7 @@ angular.module('app')
      console.groupEnd();
      }, true);*/
 
-    $scope.$watch('nDateSingle', function(newDateRange, oldDateRange) {
+    /*$scope.$watch('nDateSingle', function(newDateRange, oldDateRange) {
       //console.groupCollapsed();
       console.info('Old date range (nDateSingle):');
       console.log(oldDateRange);
@@ -183,6 +195,24 @@ angular.module('app')
       }
 
       console.info('New date range (nDateSingle):');
+      console.log(newDateRange);
+      if (moment.isMoment(newDateRange.model)) {
+        console.log('Moment date: ' + newDateRange.model.format('DD.MM.YYYY'));
+      }
+
+      //console.groupEnd();
+      console.log('=====================');
+    }, true);*/
+
+    $scope.$watch('nDateRangepickerComparison', function(newDateRange, oldDateRange) {
+      //console.groupCollapsed();
+      console.info('Old date range (nDateRangepickerComparison):');
+      console.log(oldDateRange);
+      if (moment.isMoment(oldDateRange.model)) {
+        console.log('Moment date: ' + oldDateRange.model.format('DD.MM.YYYY'));
+      }
+
+      console.info('New date range (nDateRangepickerComparison):');
       console.log(newDateRange);
       if (moment.isMoment(newDateRange.model)) {
         console.log('Moment date: ' + newDateRange.model.format('DD.MM.YYYY'));
@@ -201,7 +231,7 @@ angular.module('app')
         identifier: '@',
         name: '@',
         model: '=',
-        options: '='
+        options: '@'
       },
       templateUrl: 'templates/date-picker.html',
       controller: function($scope) {

@@ -152,6 +152,9 @@
       this.cancelClass = 'btn-default';
       this.format = 'MM/DD/YYYY';
       this.formatMask = '^[0-1][0-9]\/[0-3][0-9]\/[0-9]{4}$';
+
+      this.isoFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+
       this.separator = ' - ';
       this.singleDatePicker = false;
       this.parentEl = '';
@@ -563,18 +566,79 @@
 
           ngModelCtrl.$validators.dateRequired = function(modelValue) {
             //$log.log('========== 29 [$validators][dateRequired] ===========');
-            if (angular.isDefined(iAttrs.dateRequired)) {
+            if (angular.isUndefined(iAttrs.dateRequired)) {
               //$log.log('========== 29.1 ===========');
-              var isNotEmpty = !_isEmpty(modelValue);
-
-              ngModelCtrl.$setValidity('required', isNotEmpty);
-              return isNotEmpty;
-            }
-            else {
-              //$log.log('========== 29.2 ===========');
               ngModelCtrl.$setValidity('required', true);
               return true;
             }
+
+            //$log.log('========== 29.2 ===========');
+            var isNotEmpty = !_isEmpty(modelValue);
+
+            ngModelCtrl.$setValidity('required', isNotEmpty);
+            return isNotEmpty;
+          };
+
+          ngModelCtrl.$validators.notLaterThan = function(modelValue) {
+            //$log.log('========== 30 [$validators][notLaterThan] ===========');
+            if (angular.isUndefined(iAttrs.notLaterThan)) {
+              //$log.log('========== 30.1 ===========');
+              return true;
+            }
+
+            if (angular.isUndefined(modelValue) || modelValue === null) {
+              //$log.log('========== 30.2 ===========');
+              return true;
+            }
+
+            //$log.log('========== 30.3 ===========');
+            var prepareDateString = iAttrs.notLaterThan.replace(/^"|"$/g, ''),
+              momentDate = moment(prepareDateString, scope.internalOptions.format);
+
+            if (!momentDate.isValid()) {
+              //$log.log('========== 30.4 ===========');
+              momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
+            }
+
+            if (!momentDate.isValid()) {
+              //$log.log('========== 30.5 ===========');
+              throw new Error('Passed in comparison model for "notLaterThan" validator is invalid!');
+            }
+
+            var modelAsMoment = _getMoment(modelValue);
+
+            return modelAsMoment.isBefore(momentDate) || modelAsMoment.isSame(momentDate);
+          };
+
+          ngModelCtrl.$validators.notEarlierThan = function(modelValue) {
+            //$log.log('========== 31 [$validators][notEarlierThan] ===========');
+            if (angular.isUndefined(iAttrs.notEarlierThan)) {
+              //$log.log('========== 31.1 ===========');
+              return true;
+            }
+
+            if (angular.isUndefined(modelValue) || modelValue === null) {
+              //$log.log('========== 31.2 ===========');
+              return true;
+            }
+
+            //$log.log('========== 31.3 ===========');
+            var prepareDateString = iAttrs.notEarlierThan.replace(/^"|"$/g, ''),
+              momentDate = moment(prepareDateString, scope.internalOptions.format);
+
+            if (!momentDate.isValid()) {
+              //$log.log('========== 31.4 ===========');
+              momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
+            }
+
+            if (!momentDate.isValid()) {
+              //$log.log('========== 31.5 ===========');
+              throw new Error('Passed in comparison model for "notEarlierThan" validator is invalid!');
+            }
+
+            var modelAsMoment = _getMoment(modelValue);
+
+            return modelAsMoment.isAfter(momentDate) || modelAsMoment.isSame(momentDate);
           };
 
           ngModelCtrl.$isEmpty = function(value) {
@@ -1035,7 +1099,7 @@
 
   angular.module('nDaterangepicker')
     .directive('shorthandDateRangePicker', function($log) {
-      //$log.warn('shorthandDateRangePicker directive might not work as expected!');
+      $log.warn('shorthandDateRangePicker directive might not work as expected!');
 
       return {
         restrict: 'E',

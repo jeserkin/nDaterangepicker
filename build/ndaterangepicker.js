@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.9-rc.6
+ * nDaterangepicker 0.1.9-rc.7
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -120,6 +120,7 @@
         this.cancelClass = "btn-default";
         this.format = "MM/DD/YYYY";
         this.formatMask = "^[0-1][0-9]/[0-3][0-9]/[0-9]{4}$";
+        this.isoFormat = "YYYY-MM-DDTHH:mm:ssZ";
         this.separator = " - ";
         this.singleDatePicker = false;
         this.parentEl = "";
@@ -377,14 +378,47 @@
                     return _toType(viewValue);
                 });
                 ngModelCtrl.$validators.dateRequired = function(modelValue) {
-                    if (angular.isDefined(iAttrs.dateRequired)) {
-                        var isNotEmpty = !_isEmpty(modelValue);
-                        ngModelCtrl.$setValidity("required", isNotEmpty);
-                        return isNotEmpty;
-                    } else {
+                    if (angular.isUndefined(iAttrs.dateRequired)) {
                         ngModelCtrl.$setValidity("required", true);
                         return true;
                     }
+                    var isNotEmpty = !_isEmpty(modelValue);
+                    ngModelCtrl.$setValidity("required", isNotEmpty);
+                    return isNotEmpty;
+                };
+                ngModelCtrl.$validators.notLaterThan = function(modelValue) {
+                    if (angular.isUndefined(iAttrs.notLaterThan)) {
+                        return true;
+                    }
+                    if (angular.isUndefined(modelValue) || modelValue === null) {
+                        return true;
+                    }
+                    var prepareDateString = iAttrs.notLaterThan.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
+                    if (!momentDate.isValid()) {
+                        momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
+                    }
+                    if (!momentDate.isValid()) {
+                        throw new Error('Passed in comparison model for "notLaterThan" validator is invalid!');
+                    }
+                    var modelAsMoment = _getMoment(modelValue);
+                    return modelAsMoment.isBefore(momentDate) || modelAsMoment.isSame(momentDate);
+                };
+                ngModelCtrl.$validators.notEarlierThan = function(modelValue) {
+                    if (angular.isUndefined(iAttrs.notEarlierThan)) {
+                        return true;
+                    }
+                    if (angular.isUndefined(modelValue) || modelValue === null) {
+                        return true;
+                    }
+                    var prepareDateString = iAttrs.notEarlierThan.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
+                    if (!momentDate.isValid()) {
+                        momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
+                    }
+                    if (!momentDate.isValid()) {
+                        throw new Error('Passed in comparison model for "notEarlierThan" validator is invalid!');
+                    }
+                    var modelAsMoment = _getMoment(modelValue);
+                    return modelAsMoment.isAfter(momentDate) || modelAsMoment.isSame(momentDate);
                 };
                 ngModelCtrl.$isEmpty = function(value) {
                     return _isEmpty(value);
@@ -632,6 +666,7 @@
         };
     });
     angular.module("nDaterangepicker").directive("shorthandDateRangePicker", function($log) {
+        $log.warn("shorthandDateRangePicker directive might not work as expected!");
         return {
             restrict: "E",
             scope: {
