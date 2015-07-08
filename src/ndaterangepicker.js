@@ -1031,7 +1031,8 @@
             //$log.log('========== 25 [blur] ===========');
             _lastCatchableEvent = e.type;
             // @TODO Better solution?
-            if (angular.element('.daterangepicker.show-calendar:visible').length > 0) {
+            if (angular.element('.daterangepicker.show-calendar:visible').length > 0
+              && _tmpModelPlaceholder === null) {
               //$log.log('========== 25.0 ===========');
               return;
             }

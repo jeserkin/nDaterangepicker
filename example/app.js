@@ -127,7 +127,7 @@ angular.module('app')
         type: 'moment'
       },
       //model: null
-      model: '01.01.2014'
+      model: '02.01.2014'
       /*model: {
         startDate: null,
         filldate: null

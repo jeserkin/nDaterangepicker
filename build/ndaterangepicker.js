@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.9-rc.7
+ * nDaterangepicker 0.1.9-rc.8
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -634,7 +634,7 @@
                 });
                 el.on("blur", function(e) {
                     _lastCatchableEvent = e.type;
-                    if (angular.element(".daterangepicker.show-calendar:visible").length > 0) {
+                    if (angular.element(".daterangepicker.show-calendar:visible").length > 0 && _tmpModelPlaceholder === null) {
                         return;
                     }
                     if (_tmpModelPlaceholder === null) {
