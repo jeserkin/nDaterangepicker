@@ -147,6 +147,7 @@
       this.timePickerSeconds = false;
       this.ranges = false;
       this.opens = 'right'; // 'left'/'right'/'center'
+      this.drops = 'down'; // 'down'/'up'
       this.buttonClasses = ['btn', 'btn-small btn-sm'];
       this.applyClass = 'btn-success';
       this.cancelClass = 'btn-default';
@@ -308,6 +309,16 @@
 
       this.getOpens = function() {
         return this.opens;
+      };
+
+      this.setDrops = function(drops) {
+        this.drops = drops;
+
+        return this;
+      };
+
+      this.getDrops = function() {
+        return this.drops;
       };
 
       this.addButtonClass = function(buttonClass) {
@@ -709,7 +720,7 @@
               }
             }
 
-            return el.daterangepicker(scope.internalOptions, function(start, end) {
+            el.daterangepicker(scope.internalOptions, function(start, end) {
               //$log.log('========== 7 [daterangepicker] ===========');
               return $timeout(function() {
                 return scope.$apply(function() {
@@ -744,6 +755,22 @@
                 });
               });
             });
+
+            if(scope.internalOptions.drops === 'dynamic') {
+              var isVisibleBelow = function(element, container) {
+                var totalHeight = element.offset().top + element.outerHeight() + container.outerHeight();
+
+                return totalHeight <= $(window).height() + $(window).scrollTop();
+              };
+
+              var picker = _getPicker(),
+                moveFn = picker.move;
+
+              picker.move = function() {
+                picker.drops = isVisibleBelow(el, picker.container) ? 'down' : 'up';
+                moveFn.call(picker);
+              }
+            }
           };
 
           _getPicker = function() {

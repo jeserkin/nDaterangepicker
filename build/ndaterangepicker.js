@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.9-rc.8
+ * nDaterangepicker 0.1.9-rc.9
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -115,6 +115,7 @@
         this.timePickerSeconds = false;
         this.ranges = false;
         this.opens = "right";
+        this.drops = "down";
         this.buttonClasses = [ "btn", "btn-small btn-sm" ];
         this.applyClass = "btn-success";
         this.cancelClass = "btn-default";
@@ -228,6 +229,13 @@
         };
         this.getOpens = function() {
             return this.opens;
+        };
+        this.setDrops = function(drops) {
+            this.drops = drops;
+            return this;
+        };
+        this.getDrops = function() {
+            return this.drops;
         };
         this.addButtonClass = function(buttonClass) {
             this.buttonClasses.push(buttonClass);
@@ -454,7 +462,7 @@
                             scope.internalOptions.endDate = initialValue.endDate;
                         }
                     }
-                    return el.daterangepicker(scope.internalOptions, function(start, end) {
+                    el.daterangepicker(scope.internalOptions, function(start, end) {
                         return $timeout(function() {
                             return scope.$apply(function() {
                                 var userInputAsMoment = angular.isDefined(_persistentUserInput) && _persistentUserInput.length > 0 ? moment(_persistentUserInput, scope.internalOptions.format) : undefined;
@@ -467,6 +475,17 @@
                             });
                         });
                     });
+                    if (scope.internalOptions.drops === "dynamic") {
+                        var isVisibleBelow = function(element, container) {
+                            var totalHeight = element.offset().top + element.outerHeight() + container.outerHeight();
+                            return totalHeight <= $(window).height() + $(window).scrollTop();
+                        };
+                        var picker = _getPicker(), moveFn = picker.move;
+                        picker.move = function() {
+                            picker.drops = isVisibleBelow(el, picker.container) ? "down" : "up";
+                            moveFn.call(picker);
+                        };
+                    }
                 };
                 _getPicker = function() {
                     return el.data("daterangepicker");

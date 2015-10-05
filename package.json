@@ -1,6 +1,6 @@
 {
   "name": "nDaterangepicker",
-  "version": "0.1.9-rc.8",
+  "version": "0.1.9-rc.9",
   "description": "Angular.js wrapper for dangrossman/bootstrap-daterangepicker",
   "repository": {
     "type": "git",
