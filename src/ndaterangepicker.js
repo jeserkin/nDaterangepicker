@@ -140,6 +140,8 @@
       this.dateLimit = false;
       this.timeZone = moment().utcOffset();
       this.showDropdowns = false;
+      this.yearDecrement = 20;
+      this.yearIncrement = 20;
       this.showWeekNumbers = false;
       this.timePicker = false;
       this.timePickerIncrement = 30;
@@ -233,6 +235,26 @@
 
       this.isShowDropdowns = function() {
         return this.showDropdowns;
+      };
+
+      this.setYearDecrement = function(yearDecrement) {
+        this.yearDecrement = yearDecrement;
+
+        return this;
+      };
+
+      this.getYearDecrement = function() {
+        return this.yearDecrement;
+      };
+
+      this.setYearIncrement = function(yearIncrement) {
+        this.yearIncrement = yearIncrement;
+
+        return this;
+      };
+
+      this.getYearIncrement = function() {
+        return this.yearIncrement;
       };
 
       this.setShowWeekNumbers = function(showWeekNumbers) {
