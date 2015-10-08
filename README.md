@@ -8,3 +8,4 @@
 ### General outline
 * **PURE** AngularJS
 * USE only **jqLite** to support dynamic behaviour
+* Basic structure `service/directive/template`
