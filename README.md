@@ -6,4 +6,5 @@
 > **Heads up!** This is a work in progress branch.
 
 ### General outline
-* PURE AngularJS
+* **PURE** AngularJS
+* USE only **jqLite** to support dynamic behaviour
