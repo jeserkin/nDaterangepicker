@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.10
+ * nDaterangepicker 0.1.11
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -648,7 +648,11 @@
                     _lastCatchableEvent = e.type;
                     return $timeout(function() {
                         return scope.$apply(function() {
-                            _setViewValue(picker.startDate, picker.endDate);
+                            var start = _toType(picker.startDate);
+                            delete start._offset;
+                            var end = _toType(picker.endDate);
+                            delete end._offset;
+                            _setViewValue(start, end);
                             return ngModelCtrl.$render();
                         });
                     });

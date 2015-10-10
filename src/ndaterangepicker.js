@@ -1047,7 +1047,13 @@
             return $timeout(function() {
               return scope.$apply(function() {
                 //$log.log('========== 22.1 ===========');
-                _setViewValue(picker.startDate, picker.endDate);
+                var start = _toType(picker.startDate);
+                delete start._offset;
+
+                var end = _toType(picker.endDate);
+                delete end._offset;
+
+                _setViewValue(start, end);
                 //$log.log('========== 22.2 ===========');
 
                 return ngModelCtrl.$render();
