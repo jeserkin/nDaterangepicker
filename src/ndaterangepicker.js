@@ -1048,9 +1048,11 @@
               return scope.$apply(function() {
                 //$log.log('========== 22.1 ===========');
                 var start = _toType(picker.startDate);
+                start._isUTC = false;
                 delete start._offset;
 
                 var end = _toType(picker.endDate);
+                end._isUTC = false;
                 delete end._offset;
 
                 _setViewValue(start, end);
