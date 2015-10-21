@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.12
+ * nDaterangepicker 0.1.13
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -410,39 +410,55 @@
                     ngModelCtrl.$setValidity("required", isNotEmpty);
                     return isNotEmpty;
                 };
-                ngModelCtrl.$validators.notLaterThan = function(modelValue) {
-                    if (angular.isUndefined(iAttrs.notLaterThan)) {
+                var notLaterThan = function(model, compareTo) {
+                    if (angular.isUndefined(compareTo) || compareTo === "") {
                         return true;
                     }
-                    if (angular.isUndefined(modelValue) || modelValue === null) {
+                    if (angular.isUndefined(model) || model === null) {
                         return true;
                     }
-                    var prepareDateString = iAttrs.notLaterThan.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
+                    var prepareDateString = compareTo.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
                     if (!momentDate.isValid()) {
                         momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
                     }
                     if (!momentDate.isValid()) {
                         throw new Error('Passed in comparison model for "notLaterThan" validator is invalid!');
                     }
-                    var modelAsMoment = _getMoment(modelValue);
+                    var modelAsMoment = _getMoment(model);
                     return modelAsMoment.isBefore(momentDate) || modelAsMoment.isSame(momentDate);
                 };
-                ngModelCtrl.$validators.notEarlierThan = function(modelValue) {
-                    if (angular.isUndefined(iAttrs.notEarlierThan)) {
+                scope.$watch(function() {
+                    return iAttrs.notLaterThan;
+                }, function(newNotLaterThan) {
+                    ngModelCtrl.$setValidity("notLaterThan", notLaterThan(ngModelCtrl.$modelValue, newNotLaterThan));
+                });
+                ngModelCtrl.$validators.notLaterThan = function(modelValue) {
+                    return notLaterThan(modelValue, iAttrs.notLaterThan);
+                };
+                var notEarlierThan = function(model, compareTo) {
+                    if (angular.isUndefined(compareTo) || compareTo === "") {
                         return true;
                     }
-                    if (angular.isUndefined(modelValue) || modelValue === null) {
+                    if (angular.isUndefined(model) || model === null) {
                         return true;
                     }
-                    var prepareDateString = iAttrs.notEarlierThan.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
+                    var prepareDateString = compareTo.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
                     if (!momentDate.isValid()) {
                         momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
                     }
                     if (!momentDate.isValid()) {
                         throw new Error('Passed in comparison model for "notEarlierThan" validator is invalid!');
                     }
-                    var modelAsMoment = _getMoment(modelValue);
+                    var modelAsMoment = _getMoment(model);
                     return modelAsMoment.isAfter(momentDate) || modelAsMoment.isSame(momentDate);
+                };
+                scope.$watch(function() {
+                    return iAttrs.notEarlierThan;
+                }, function(newNotEarlierThan) {
+                    ngModelCtrl.$setValidity("notEarlierThan", notEarlierThan(ngModelCtrl.$modelValue, newNotEarlierThan));
+                });
+                ngModelCtrl.$validators.notEarlierThan = function(modelValue) {
+                    return notEarlierThan(modelValue, iAttrs.notEarlierThan);
                 };
                 ngModelCtrl.$isEmpty = function(value) {
                     return _isEmpty(value);
@@ -649,11 +665,15 @@
                     return $timeout(function() {
                         return scope.$apply(function() {
                             var start = _toType(picker.startDate);
-                            start._isUTC = false;
-                            delete start._offset;
+                            if (moment.isMoment(start)) {
+                                start._isUTC = false;
+                                delete start._offset;
+                            }
                             var end = _toType(picker.endDate);
-                            end._isUTC = false;
-                            delete end._offset;
+                            if (moment.isMoment(end)) {
+                                end._isUTC = false;
+                                delete end._offset;
+                            }
                             _setViewValue(start, end);
                             return ngModelCtrl.$render();
                         });

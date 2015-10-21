@@ -1,0 +1,25 @@
+<div>
+  <h2>Single datepicker</h2>
+
+  <div class="form-group well">
+    <div class="col-xs-3">
+      <div class="input-group date-range-picker" ng-class="{'has-error': form[vm.name].$error.required}">
+        <input type="text" id="{{vm.identifier}}" class="form-control" name="{{vm.name}}"
+          ng-model="vm.model" options="{{vm.options}}" date-range-picker date-required />
+
+      <span class="input-group-btn">
+        <label type="button" class="btn btn-default date" for="{{vm.identifier}}">
+          <i class="glyphicon glyphicon-calendar"></i>
+        </label>
+      </span>
+      </div>
+      <div class="input-group">
+        <button type="button" class="btn btn-link" title="Reset"
+          ng-click="reset(vm.identifier)"
+          ng-show="vm.model != null || vm.model.startDate != null">
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

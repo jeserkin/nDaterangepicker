@@ -612,20 +612,20 @@
             return isNotEmpty;
           };
 
-          ngModelCtrl.$validators.notLaterThan = function(modelValue) {
+          var notLaterThan = function(model, compareTo) {
             //$log.log('========== 30 [$validators][notLaterThan] ===========');
-            if (angular.isUndefined(iAttrs.notLaterThan)) {
+            if (angular.isUndefined(compareTo) || compareTo === '') {
               //$log.log('========== 30.1 ===========');
               return true;
             }
 
-            if (angular.isUndefined(modelValue) || modelValue === null) {
+            if (angular.isUndefined(model) || model === null) {
               //$log.log('========== 30.2 ===========');
               return true;
             }
 
             //$log.log('========== 30.3 ===========');
-            var prepareDateString = iAttrs.notLaterThan.replace(/^"|"$/g, ''),
+            var prepareDateString = compareTo.replace(/^"|"$/g, ''),
               momentDate = moment(prepareDateString, scope.internalOptions.format);
 
             if (!momentDate.isValid()) {
@@ -638,25 +638,35 @@
               throw new Error('Passed in comparison model for "notLaterThan" validator is invalid!');
             }
 
-            var modelAsMoment = _getMoment(modelValue);
+            var modelAsMoment = _getMoment(model);
 
             return modelAsMoment.isBefore(momentDate) || modelAsMoment.isSame(momentDate);
           };
 
-          ngModelCtrl.$validators.notEarlierThan = function(modelValue) {
+          scope.$watch(function() {
+            return iAttrs.notLaterThan;
+          }, function(newNotLaterThan) {
+            ngModelCtrl.$setValidity('notLaterThan', notLaterThan(ngModelCtrl.$modelValue, newNotLaterThan));
+          });
+
+          ngModelCtrl.$validators.notLaterThan = function(modelValue) {
+            return notLaterThan(modelValue, iAttrs.notLaterThan);
+          };
+
+          var notEarlierThan = function(model, compareTo) {
             //$log.log('========== 31 [$validators][notEarlierThan] ===========');
-            if (angular.isUndefined(iAttrs.notEarlierThan)) {
+            if (angular.isUndefined(compareTo) || compareTo === '') {
               //$log.log('========== 31.1 ===========');
               return true;
             }
 
-            if (angular.isUndefined(modelValue) || modelValue === null) {
+            if (angular.isUndefined(model) || model === null) {
               //$log.log('========== 31.2 ===========');
               return true;
             }
 
             //$log.log('========== 31.3 ===========');
-            var prepareDateString = iAttrs.notEarlierThan.replace(/^"|"$/g, ''),
+            var prepareDateString = compareTo.replace(/^"|"$/g, ''),
               momentDate = moment(prepareDateString, scope.internalOptions.format);
 
             if (!momentDate.isValid()) {
@@ -669,9 +679,19 @@
               throw new Error('Passed in comparison model for "notEarlierThan" validator is invalid!');
             }
 
-            var modelAsMoment = _getMoment(modelValue);
+            var modelAsMoment = _getMoment(model);
 
             return modelAsMoment.isAfter(momentDate) || modelAsMoment.isSame(momentDate);
+          };
+
+          scope.$watch(function() {
+            return iAttrs.notEarlierThan;
+          }, function(newNotEarlierThan) {
+            ngModelCtrl.$setValidity('notEarlierThan', notEarlierThan(ngModelCtrl.$modelValue, newNotEarlierThan));
+          });
+
+          ngModelCtrl.$validators.notEarlierThan = function(modelValue) {
+            return notEarlierThan(modelValue, iAttrs.notEarlierThan);
           };
 
           ngModelCtrl.$isEmpty = function(value) {
@@ -1048,12 +1068,18 @@
               return scope.$apply(function() {
                 //$log.log('========== 22.1 ===========');
                 var start = _toType(picker.startDate);
-                start._isUTC = false;
-                delete start._offset;
+
+                if (moment.isMoment(start)) {
+                  start._isUTC = false;
+                  delete start._offset;
+                }
 
                 var end = _toType(picker.endDate);
-                end._isUTC = false;
-                delete end._offset;
+
+                if (moment.isMoment(end)) {
+                  end._isUTC = false;
+                  delete end._offset;
+                }
 
                 _setViewValue(start, end);
                 //$log.log('========== 22.2 ===========');

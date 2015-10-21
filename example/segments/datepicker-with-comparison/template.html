@@ -1,0 +1,38 @@
+<div>
+  <h2>Datepicker comparison</h2>
+
+  <div class="form-group well">
+    <div class="col-xs-3">
+      <div>Start:</div>
+      <div class="input-group date-range-picker">
+        <input type="text" id="{{vmStart.identifier}}" class="form-control" name="{{vmStart.name}}"
+          ng-model="vmStart.model" ng-model-options="{allowInvalid: true}"
+          date-range-picker options="{{vmStart.options}}"
+          not-later-than="{{vmEnd.model}}" />
+
+        <span class="input-group-btn">
+          <label type="button" class="btn btn-default date" for="{{vmStart.identifier}}">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </label>
+        </span>
+      </div>
+
+      <div>End:</div>
+      <div class="input-group date-range-picker">
+        <input type="text" id="{{vmEnd.identifier}}" class="form-control" name="{{vmEnd.name}}"
+          ng-model="vmEnd.model" ng-model-options="{allowInvalid: true}"
+          date-range-picker options="{{vmEnd.options}}" />
+
+        <span class="input-group-btn">
+          <label type="button" class="btn btn-default date" for="{{vmEnd.identifier}}">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </label>
+        </span>
+      </div>
+
+      <div class="input-group">
+        <button type="button" class="btn btn-link" title="Reset" ng-click="reset(vm.identifier)" ng-show="vm.model">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
