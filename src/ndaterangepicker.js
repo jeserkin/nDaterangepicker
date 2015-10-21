@@ -638,9 +638,11 @@
               throw new Error('Passed in comparison model for "notLaterThan" validator is invalid!');
             }
 
-            var modelAsMoment = _getMoment(model);
+            var modelAsMoment = _getMoment(model),
+              preparedModelAsMoment = _getMoment(modelAsMoment.format(scope.internalOptions.format)),
+              preparedMomentDate = _getMoment(momentDate.format(scope.internalOptions.format));
 
-            return modelAsMoment.isBefore(momentDate) || modelAsMoment.isSame(momentDate);
+            return preparedModelAsMoment.isBefore(preparedMomentDate) || preparedModelAsMoment.isSame(preparedMomentDate);
           };
 
           scope.$watch(function() {
@@ -679,9 +681,11 @@
               throw new Error('Passed in comparison model for "notEarlierThan" validator is invalid!');
             }
 
-            var modelAsMoment = _getMoment(model);
+            var modelAsMoment = _getMoment(model),
+              preparedModelAsMoment = _getMoment(modelAsMoment.format(scope.internalOptions.format)),
+              preparedMomentDate = _getMoment(momentDate.format(scope.internalOptions.format));
 
-            return modelAsMoment.isAfter(momentDate) || modelAsMoment.isSame(momentDate);
+            return preparedModelAsMoment.isAfter(preparedMomentDate) || preparedModelAsMoment.isSame(preparedMomentDate);
           };
 
           scope.$watch(function() {

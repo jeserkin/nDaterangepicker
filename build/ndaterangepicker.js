@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.13
+ * nDaterangepicker 0.1.14
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -424,8 +424,8 @@
                     if (!momentDate.isValid()) {
                         throw new Error('Passed in comparison model for "notLaterThan" validator is invalid!');
                     }
-                    var modelAsMoment = _getMoment(model);
-                    return modelAsMoment.isBefore(momentDate) || modelAsMoment.isSame(momentDate);
+                    var modelAsMoment = _getMoment(model), preparedModelAsMoment = _getMoment(modelAsMoment.format(scope.internalOptions.format)), preparedMomentDate = _getMoment(momentDate.format(scope.internalOptions.format));
+                    return preparedModelAsMoment.isBefore(preparedMomentDate) || preparedModelAsMoment.isSame(preparedMomentDate);
                 };
                 scope.$watch(function() {
                     return iAttrs.notLaterThan;
@@ -449,8 +449,8 @@
                     if (!momentDate.isValid()) {
                         throw new Error('Passed in comparison model for "notEarlierThan" validator is invalid!');
                     }
-                    var modelAsMoment = _getMoment(model);
-                    return modelAsMoment.isAfter(momentDate) || modelAsMoment.isSame(momentDate);
+                    var modelAsMoment = _getMoment(model), preparedModelAsMoment = _getMoment(modelAsMoment.format(scope.internalOptions.format)), preparedMomentDate = _getMoment(momentDate.format(scope.internalOptions.format));
+                    return preparedModelAsMoment.isAfter(preparedMomentDate) || preparedModelAsMoment.isSame(preparedMomentDate);
                 };
                 scope.$watch(function() {
                     return iAttrs.notEarlierThan;
