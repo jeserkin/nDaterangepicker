@@ -854,7 +854,8 @@
           _resetPicker = function() {
             //$log.log('========== 11 [_resetPicker] ===========');
             var picker = _getPicker(),
-              dateToSet = _getDateToSet();
+              dateToSet = _getDateToSet(),
+              dateToSetAsMoment = _getMoment(dateToSet.format(scope.internalOptions.format));
 
             //$log.debug('StartDate');
             //$log.debug(dateToSet.format(scope.internalOptions.format));
@@ -863,9 +864,9 @@
             //$log.debug(dateToSet.format(scope.internalOptions.format));
 
             //$log.log('========== 11.1 ===========');
-            picker.setEndDate(dateToSet.format(scope.internalOptions.format));
+            picker.setEndDate(dateToSetAsMoment);
             //$log.log('========== 11.2 ===========');
-            picker.setStartDate(dateToSet.format(scope.internalOptions.format));
+            picker.setStartDate(dateToSetAsMoment);
           };
 
           _resetPickerWithRender = function() {

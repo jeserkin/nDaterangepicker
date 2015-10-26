@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.15
+ * nDaterangepicker 0.1.16
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -540,9 +540,9 @@
                     }
                 };
                 _resetPicker = function() {
-                    var picker = _getPicker(), dateToSet = _getDateToSet();
-                    picker.setEndDate(dateToSet.format(scope.internalOptions.format));
-                    picker.setStartDate(dateToSet.format(scope.internalOptions.format));
+                    var picker = _getPicker(), dateToSet = _getDateToSet(), dateToSetAsMoment = _getMoment(dateToSet.format(scope.internalOptions.format));
+                    picker.setEndDate(dateToSetAsMoment);
+                    picker.setStartDate(dateToSetAsMoment);
                 };
                 _resetPickerWithRender = function() {
                     return $timeout(function() {
