@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.8
+ * nDaterangepicker 0.1.8.1
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
