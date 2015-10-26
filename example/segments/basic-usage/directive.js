@@ -14,7 +14,7 @@ angular.module('app')
             identifier: 'nDate',
             format: 'DD.MM.YYYY'
           },
-          model: '01.01.2014'
+          model: undefined
           /*model: {
            startDate: '01.01.2014',
            endDate: '01.01.2014'

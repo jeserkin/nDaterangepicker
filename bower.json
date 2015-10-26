@@ -1,6 +1,6 @@
 {
   "name": "nDaterangepicker",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "main": "build/ndaterangepicker.js",
   "ignore": [
     "**/.*",

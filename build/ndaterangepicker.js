@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.14
+ * nDaterangepicker 0.1.15
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -554,15 +554,15 @@
                     });
                 };
                 _setRange = function(startDate, endDate) {
-                    var picker = _getPicker();
-                    if (!_getMoment(startDate).isValid()) {
+                    var picker = _getPicker(), momentStartDate = _getMoment(startDate), momentEndDate = _getMoment(endDate);
+                    if (!momentStartDate.isValid()) {
                         throw new Error("Either invalid startDate was passed or invalid format. Please check!");
                     }
-                    if (!_getMoment(endDate).isValid()) {
+                    if (!momentEndDate.isValid()) {
                         throw new Error("Either invalid endDate was passed or invalid format. Please check!");
                     }
-                    picker.setEndDate(endDate);
-                    picker.setStartDate(startDate);
+                    picker.setEndDate(momentEndDate);
+                    picker.setStartDate(momentStartDate);
                 };
                 _formatted = function(viewVal) {
                     var f = function(date) {

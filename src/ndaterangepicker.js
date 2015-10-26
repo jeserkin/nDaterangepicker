@@ -773,10 +773,10 @@
                   //$log.log('========== 7.1 ===========');
                   //$log.debug('Received start date:');
                   //$log.debug(start);
-                  //printMoment(start, scope.internalOptions.format);
+                  ////printMoment(start, scope.internalOptions.format);
                   //$log.debug('Received end date:');
                   //$log.debug(end);
-                  //printMoment(end, scope.internalOptions.format);
+                  ////printMoment(end, scope.internalOptions.format);
 
                   //$log.debug('Persistent user input');
                   //$log.debug(_persistentUserInput);
@@ -885,22 +885,27 @@
 
           _setRange = function(startDate, endDate) {
             //$log.log('========== 12 [_setRange] ===========');
-            var picker = _getPicker();
+            var picker = _getPicker(),
+              momentStartDate = _getMoment(startDate),
+              momentEndDate = _getMoment(endDate);
 
-            if (!_getMoment(startDate).isValid()) {
+            if (!momentStartDate.isValid()) {
               //$log.log('========== 12.1 ===========');
               throw new Error('Either invalid startDate was passed or invalid format. Please check!');
             }
 
-            if (!_getMoment(endDate).isValid()) {
+            if (!momentEndDate.isValid()) {
               //$log.log('========== 12.2 ===========');
               throw new Error('Either invalid endDate was passed or invalid format. Please check!');
             }
 
-            picker.setEndDate(endDate);
             //$log.log('========== 12.3 ===========');
-            picker.setStartDate(startDate);
+            //printMoment(momentEndDate);
+            picker.setEndDate(momentEndDate);
             //$log.log('========== 12.4 ===========');
+            //printMoment(momentStartDate);
+            picker.setStartDate(momentStartDate);
+            //$log.log('========== 12.5 ===========');
           };
 
           _formatted = function(viewVal) {
@@ -1073,12 +1078,16 @@
                 //$log.log('========== 22.1 ===========');
                 var start = _toType(picker.startDate);
 
+                //$log.log(start);
+
                 if (moment.isMoment(start)) {
                   start._isUTC = false;
                   delete start._offset;
                 }
 
                 var end = _toType(picker.endDate);
+
+                //$log.log(end);
 
                 if (moment.isMoment(end)) {
                   end._isUTC = false;
