@@ -802,6 +802,12 @@
               });
             });
 
+            registerDestructor(function() {
+              if (el.data('daterangepicker')) {
+                el.data('daterangepicker').remove();
+              }
+            });
+
             if(scope.internalOptions.drops === 'dynamic') {
               var isVisibleBelow = function(element, container) {
                 var totalHeight = element.offset().top + element.outerHeight() + container.outerHeight();
@@ -1071,7 +1077,7 @@
             return (new RegExp(scope.internalOptions.formatMask, 'g')).test(date) && _getMoment(date).isValid();
           };
 
-          el.on('apply.daterangepicker', function(e, picker) {
+          on(el, 'apply.daterangepicker', function(e, picker) {
             //$log.log('========== 22 [apply.daterangepicker] ===========');
             _lastCatchableEvent = e.type;
             return $timeout(function() {
@@ -1103,7 +1109,7 @@
             });
           });
 
-          el.on('keydown', function(e) {
+          on(el, 'keydown', function(e) {
             //$log.log('========== 23 [keydown] ===========');
             _lastCatchableEvent = e.type;
             if (e.keyCode == 27) { // esc
@@ -1114,7 +1120,7 @@
             }
           });
 
-          el.on('focus', function(e) {
+          on(el, 'focus', function(e) {
             //$log.log('========== 24 [focus] ===========');
             _lastCatchableEvent = e.type;
             _userInput = undefined;
@@ -1124,7 +1130,7 @@
             }
           });
 
-          el.on('blur', function(e) {
+          on(el, 'blur', function(e) {
             //$log.log('========== 25 [blur] ===========');
             _lastCatchableEvent = e.type;
             // @TODO Better solution?
@@ -1153,7 +1159,7 @@
             }
           });
 
-          el.on('keyup.daterangepicker', function(event) {
+          on(el, 'keyup.daterangepicker', function(event) {
             //$log.log('========== 26 [keyup.daterangepicker] ===========');
             event = event || window.event; // cross-browser event
 
@@ -1174,23 +1180,63 @@
 
           // @TODO Better solution?
           // @NB! VERY FRAGILE
-          angular.element(document).on('click', function(e) {
+          on(angular.element(document), 'click', function(e) {
             //$log.log('========== 27 [document.click] ===========');
             var innerEl = angular.element(e.target),
               closestTable = innerEl.closest('table'),
               closestTableParent;
-            
+
             if (angular.isDefined(closestTable) && closestTable.length) {
               //$log.log('========== 27.1 ===========');
               closestTableParent = closestTable.parent();
             }
-            
+
             if (_lastCatchableEvent === 'blur' && (angular.isUndefined(closestTableParent) ||
               closestTableParent && !closestTableParent.hasClass('calendar-date')) && angular.isDefined(_getPicker())) {
               //$log.log('========== 27.2 ===========');
               _getPicker().hide();
             }
           });
+
+          scope.$on('$destroy', cleanup);
+
+          function on(el, event, handler) {
+            if (angular.isUndefined(on.eventHolder)) {
+              on.eventHolder = [];
+            }
+            el.on(event, handler);
+            on.eventHolder.push({
+              el: el,
+              event: event,
+              handler: handler
+            });
+          }
+          function cleanupEvents() {
+            if (angular.isArray(on.eventHolder)){
+              on.eventHolder.forEach(function(o) {
+                o.el.off(o.event, o.handler);
+              });
+              on.eventHolder.length = 0;
+            }
+          }
+          function registerDestructor(f) {
+            if (angular.isUndefined(registerDestructor.destructors)){
+              registerDestructor.destructors = [];
+            }
+            registerDestructor.destructors.push(f);
+          }
+          function cleanupDesctructors() {
+            if (angular.isArray(registerDestructor.destructors)) {
+              registerDestructor.destructors.forEach(function (f) {
+                f();
+              });
+            }
+            registerDestructor.destructors.length = 0;
+          }
+          function cleanup() {
+            cleanupEvents();
+            cleanupDesctructors();
+          }
         }
       };
     });
