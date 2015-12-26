@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.16
+ * nDaterangepicker 0.1.17
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -507,6 +507,11 @@
                             });
                         });
                     });
+                    registerDestructor(function() {
+                        if (el.data("daterangepicker")) {
+                            el.data("daterangepicker").remove();
+                        }
+                    });
                     if (scope.internalOptions.drops === "dynamic") {
                         var isVisibleBelow = function(element, container) {
                             var totalHeight = element.offset().top + element.outerHeight() + container.outerHeight();
@@ -660,7 +665,7 @@
                     }
                     return new RegExp(scope.internalOptions.formatMask, "g").test(date) && _getMoment(date).isValid();
                 };
-                el.on("apply.daterangepicker", function(e, picker) {
+                on(el, "apply.daterangepicker", function(e, picker) {
                     _lastCatchableEvent = e.type;
                     return $timeout(function() {
                         return scope.$apply(function() {
@@ -679,21 +684,21 @@
                         });
                     });
                 });
-                el.on("keydown", function(e) {
+                on(el, "keydown", function(e) {
                     _lastCatchableEvent = e.type;
                     if (e.keyCode == 27) {
                         _getPicker().hide();
                         el.trigger("blur");
                     }
                 });
-                el.on("focus", function(e) {
+                on(el, "focus", function(e) {
                     _lastCatchableEvent = e.type;
                     _userInput = undefined;
                     if (ngModelCtrl.$modelValue === null || _isAcceptableDate(ngModelCtrl.$modelValue)) {
                         _tmpModelPlaceholder = ngModelCtrl.$modelValue;
                     }
                 });
-                el.on("blur", function(e) {
+                on(el, "blur", function(e) {
                     _lastCatchableEvent = e.type;
                     if (angular.element(".daterangepicker.show-calendar:visible").length > 0 && _tmpModelPlaceholder === null) {
                         return;
@@ -705,7 +710,7 @@
                         _setRange(_tmpModelPlaceholder, _tmpModelPlaceholder);
                     }
                 });
-                el.on("keyup.daterangepicker", function(event) {
+                on(el, "keyup.daterangepicker", function(event) {
                     event = event || window.event;
                     if (event.stopPropagation) {
                         event.stopPropagation();
@@ -714,7 +719,7 @@
                     }
                     event.stopImmediatePropagation();
                 });
-                angular.element(document).on("click", function(e) {
+                on(angular.element(document), "click", function(e) {
                     var innerEl = angular.element(e.target), closestTable = innerEl.closest("table"), closestTableParent;
                     if (angular.isDefined(closestTable) && closestTable.length) {
                         closestTableParent = closestTable.parent();
@@ -723,6 +728,44 @@
                         _getPicker().hide();
                     }
                 });
+                scope.$on("$destroy", cleanup);
+                function on(el, event, handler) {
+                    if (angular.isUndefined(on.eventHolder)) {
+                        on.eventHolder = [];
+                    }
+                    el.on(event, handler);
+                    on.eventHolder.push({
+                        el: el,
+                        event: event,
+                        handler: handler
+                    });
+                }
+                function cleanupEvents() {
+                    if (angular.isArray(on.eventHolder)) {
+                        on.eventHolder.forEach(function(o) {
+                            o.el.off(o.event, o.handler);
+                        });
+                        on.eventHolder.length = 0;
+                    }
+                }
+                function registerDestructor(f) {
+                    if (angular.isUndefined(registerDestructor.destructors)) {
+                        registerDestructor.destructors = [];
+                    }
+                    registerDestructor.destructors.push(f);
+                }
+                function cleanupDesctructors() {
+                    if (angular.isArray(registerDestructor.destructors)) {
+                        registerDestructor.destructors.forEach(function(f) {
+                            f();
+                        });
+                    }
+                    registerDestructor.destructors.length = 0;
+                }
+                function cleanup() {
+                    cleanupEvents();
+                    cleanupDesctructors();
+                }
             }
         };
     });

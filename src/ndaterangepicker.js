@@ -1211,28 +1211,32 @@
               handler: handler
             });
           }
+
           function cleanupEvents() {
-            if (angular.isArray(on.eventHolder)){
+            if (angular.isArray(on.eventHolder)) {
               on.eventHolder.forEach(function(o) {
                 o.el.off(o.event, o.handler);
               });
               on.eventHolder.length = 0;
             }
           }
+
           function registerDestructor(f) {
-            if (angular.isUndefined(registerDestructor.destructors)){
+            if (angular.isUndefined(registerDestructor.destructors)) {
               registerDestructor.destructors = [];
             }
             registerDestructor.destructors.push(f);
           }
+
           function cleanupDesctructors() {
             if (angular.isArray(registerDestructor.destructors)) {
-              registerDestructor.destructors.forEach(function (f) {
+              registerDestructor.destructors.forEach(function(f) {
                 f();
               });
             }
             registerDestructor.destructors.length = 0;
           }
+
           function cleanup() {
             cleanupEvents();
             cleanupDesctructors();
