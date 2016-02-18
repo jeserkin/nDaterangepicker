@@ -4,6 +4,7 @@ angular.module('app')
   .directive('datepickerWithComparison', function() {
     return {
       restrict: 'E',
+      require: '^form',
       templateUrl: 'segments/datepicker-with-comparison/template.html',
       scope: {},
       controller: function($scope) {
@@ -66,7 +67,8 @@ angular.module('app')
           console.log('=====================');
         }, true);*/
       },
-      link: function($scope) {
+      link: function(scope, iElement, iAttrs, ngFormCtrl) {
+        scope.form = ngFormCtrl;
       }
     };
   });
