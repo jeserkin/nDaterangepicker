@@ -615,9 +615,9 @@
                 };
                 _getDateToSet = function() {
                     var dateToSet, currentDate = moment(), maxDate = scope.internalOptions.maxDate, minDate = scope.internalOptions.minDate;
-                    if (maxDate && currentDate.isAfter(maxDate)) {
+                    if (maxDate && currentDate.isAfter(_getMoment(maxDate))) {
                         dateToSet = _getMoment(maxDate);
-                    } else if (minDate && currentDate.isBefore(minDate)) {
+                    } else if (minDate && currentDate.isBefore(_getMoment(minDate))) {
                         dateToSet = _getMoment(minDate);
                     } else {
                         dateToSet = currentDate;
