@@ -988,11 +988,11 @@
               maxDate = scope.internalOptions.maxDate,
               minDate = scope.internalOptions.minDate;
 
-            if (maxDate && currentDate.isAfter(maxDate)) {
+            if (maxDate && currentDate.isAfter(_getMoment(maxDate))) {
               //$log.log('========== 16.1 ===========');
               dateToSet = _getMoment(maxDate);
             }
-            else if (minDate && currentDate.isBefore(minDate)) {
+            else if (minDate && currentDate.isBefore(_getMoment(minDate))) {
               //$log.log('========== 16.2 ===========');
               dateToSet = _getMoment(minDate);
             }
