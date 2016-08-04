@@ -1,5 +1,5 @@
 /**
- * nDaterangepicker 0.1.17
+ * nDaterangepicker 0.1.19
  * @author Eugene Serkin
  * @license MIT License http://opensource.org/licenses/MIT
  */
@@ -459,6 +459,46 @@
                 });
                 ngModelCtrl.$validators.notEarlierThan = function(modelValue) {
                     return notEarlierThan(modelValue, iAttrs.notEarlierThan);
+                };
+                function minDateLimit(modelValue, compareTo) {
+                    if (angular.isUndefined(compareTo) || compareTo === "" || angular.isUndefined(modelValue) || modelValue === null) {
+                        return true;
+                    }
+                    var prepareDateString = compareTo.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
+                    if (!momentDate.isValid()) {
+                        momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
+                    }
+                    if (!momentDate.isValid()) {
+                        throw new Error('Passed in comparison model for "minDateLimit" validator is invalid!');
+                    }
+                    var modelAsMoment = _getMoment(modelValue), preparedModelAsMoment = _getMoment(modelAsMoment.format(scope.internalOptions.format)), preparedMomentDate = _getMoment(momentDate.format(scope.internalOptions.format));
+                    return preparedModelAsMoment.isAfter(preparedMomentDate) || preparedModelAsMoment.isSame(preparedMomentDate);
+                }
+                iAttrs.$observe("minDateLimit", function(minDateLimitValue) {
+                    ngModelCtrl.$setValidity("minDateLimit", minDateLimit(ngModelCtrl.$modelValue, minDateLimitValue));
+                });
+                ngModelCtrl.$validators.minDateLimit = function(modelValue, viewValue) {
+                    return minDateLimit(modelValue, iAttrs.minDateLimit);
+                };
+                function maxDateLimit(modelValue, compareTo) {
+                    if (angular.isUndefined(compareTo) || compareTo === "" || angular.isUndefined(modelValue) || modelValue === null) {
+                        return true;
+                    }
+                    var prepareDateString = compareTo.replace(/^"|"$/g, ""), momentDate = moment(prepareDateString, scope.internalOptions.format);
+                    if (!momentDate.isValid()) {
+                        momentDate = moment(prepareDateString, scope.internalOptions.isoFormat);
+                    }
+                    if (!momentDate.isValid()) {
+                        throw new Error('Passed in comparison model for "maxDate" validator is invalid!');
+                    }
+                    var modelAsMoment = _getMoment(modelValue), preparedModelAsMoment = _getMoment(modelAsMoment.format(scope.internalOptions.format)), preparedMomentDate = _getMoment(momentDate.format(scope.internalOptions.format));
+                    return preparedModelAsMoment.isBefore(preparedMomentDate) || preparedModelAsMoment.isSame(preparedMomentDate);
+                }
+                iAttrs.$observe("maxDateLimit", function(maxDateLimitValue) {
+                    ngModelCtrl.$setValidity("maxDateLimit", maxDateLimit(ngModelCtrl.$modelValue, maxDateLimitValue));
+                });
+                ngModelCtrl.$validators.maxDateLimit = function(modelValue, viewValue) {
+                    return maxDateLimit(modelValue, iAttrs.maxDateLimit);
                 };
                 ngModelCtrl.$isEmpty = function(value) {
                     return _isEmpty(value);
