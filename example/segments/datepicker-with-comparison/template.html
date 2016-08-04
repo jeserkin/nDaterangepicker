@@ -4,11 +4,12 @@
   <div class="form-group well">
     <div class="col-xs-12">
       <div>Start:</div>
+
       <div class="input-group date-range-picker">
         <input type="text" id="{{vmStart.identifier}}" class="form-control" name="{{vmStart.name}}"
           ng-model="vmStart.model" ng-model-options="{allowInvalid: true}"
           date-range-picker options="{{vmStart.options}}"
-          not-later-than="{{vmEnd.model}}" />
+          not-later-than="{{vmEnd.model}}" min-date-limit="{{vmStart.minDate}}" />
 
         <span class="input-group-btn">
           <label type="button" class="btn btn-default date" for="{{vmStart.identifier}}">
@@ -16,19 +17,26 @@
           </label>
         </span>
       </div>
+
       <div><code><strong>Model value:</strong> {{vmStart.model|json}}</code></div>
       <div><code><strong>Errors:</strong> {{form[vmStart.name].$error|json}}</code></div>
 
+      <div class="input-group">
+        <button type="button" class="btn btn-link" title="Reset" ng-click="reset(vmStart.identifier)" ng-show="vmStart.model">Reset</button>
+      </div>
+    </div>
+
+    <div class="col-xs-12">
       <hr />
     </div>
 
     <div class="col-xs-12">
-
       <div>End:</div>
+
       <div class="input-group date-range-picker">
         <input type="text" id="{{vmEnd.identifier}}" class="form-control" name="{{vmEnd.name}}"
           ng-model="vmEnd.model" ng-model-options="{allowInvalid: true}"
-          date-range-picker options="{{vmEnd.options}}" />
+          date-range-picker options="{{vmEnd.options}}" max-date-limit="{{vmEnd.maxDate}}" />
 
         <span class="input-group-btn">
           <label type="button" class="btn btn-default date" for="{{vmEnd.identifier}}">
@@ -36,11 +44,12 @@
           </label>
         </span>
       </div>
+
       <div><code><strong>Model value:</strong> {{vmEnd.model|json}}</code></div>
       <div><code><strong>Errors:</strong> {{form[vmEnd.name].$error|json}}</code></div>
 
       <div class="input-group">
-        <button type="button" class="btn btn-link" title="Reset" ng-click="reset(vm.identifier)" ng-show="vm.model">Reset</button>
+        <button type="button" class="btn btn-link" title="Reset" ng-click="reset(vmEnd.identifier)" ng-show="vmEnd.model">Reset</button>
       </div>
     </div>
   </div>

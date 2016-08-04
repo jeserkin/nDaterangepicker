@@ -12,6 +12,7 @@ angular.module('app')
           identifier: 'nDateRangepickerComparisonStart',
           name: 'nDateRangepickerComparisonStart',
           model: undefined,
+          minDate: moment().format('DD.MM.YYYY'),
           options: {
             format: 'DD.MM.YYYY',
             identifier: 'nDateRangepickerComparisonEnd'/*,
@@ -23,6 +24,7 @@ angular.module('app')
           identifier: 'nDateRangepickerComparisonEnd',
           name: 'nDateRangepickerComparisonEnd',
           model: undefined,
+          maxDate: moment().add(7, 'days').format('DD.MM.YYYY'),
           options: {
             format: 'DD.MM.YYYY',
             identifier: 'nDateRangepickerComparisonEnd'/*,
