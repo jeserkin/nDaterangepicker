@@ -1,24 +1,71 @@
-// Karma configuration file
-// See http://karma-runner.github.io/0.10/config/configuration-file.html
-module.exports = function(config) {
-  config.set({
-    basePath: './',
+(function() {
+  'use strict';
 
-    frameworks: ["jasmine"],
+  module.exports = function(config) {
+    config.set({
+      basePath: '',
+      frameworks: ['mocha', 'chai'],
+      autoWatch: true,
+      logLevel: config.LOG_INFO,
+      logColors: true,
+      browsers: ['PhantomJS'],
+      browserDisconnectTimeout: 10000,
+      browserDisconnectTolerance: 2,
+      browserNoActivityTimeout: 30000,
+      captureTimeout: 5000,
+      singleRun: true,
+      client: {
+        captureConsole: true,
+        mocha: {
+          bail: true
+        }
+      }
+    });
 
-    // list of files / patterns to load in the browser
-    files: [
-      //'test/lib/jquery.min.js',
-      //'test/lib/helpers.js',
-      'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.3/angular.js',
-      'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.3/angular-route.js',
-      'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.3/angular-animate.js',
-      'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.3/angular-mocks.js',
-      'src/**/*.js',
-      'test/**/*.js'
-    ],
+    if (process.env.TRAVIS) {
+      config.logLevel = config.LOG_DEBUG;
+      // Karma (with socket.io 1.x) buffers by 50 and 50 tests can take a long time on IEs;-)
+      config.browserNoActivityTimeout = 120000;
 
-    autoWatch: true,
-    browsers: ['PhantomJS']
-  });
-};
+      // Debug logging into a file, that we print out at the end of the build.
+      config.loggers.push({
+        type: 'file',
+        filename: process.env.LOGS_DIR + '/karma.log'
+      });
+    }
+
+    config.set({
+      files: [
+        'node_modules/angular/angular.js',
+        'node_modules/moment/moment.js',
+
+        'node_modules/angular-mocks/angular-mocks.js',
+
+        'build/ndaterangepicker.js',
+        'test/**/*.spec.js'
+      ],
+
+      // use dolts reporter, as travis terminal does not support escaping sequences
+      // possible values: 'dots', 'progress', 'junit', 'teamcity', 'mocha'
+      // CLI --reporters progress
+      reporters: ['mocha', 'dots', 'junit'],
+
+      // reporter options
+      mochaReporter: {
+        output: 'full'
+      },
+
+      junitReporter: {
+        outputDir: 'test-results',
+        outputFile: 'karma.xml'
+      },
+
+      // web server port
+      port: 9876,
+
+      // enable / disable colors in the output (reporters and logs)
+      // CLI --colors --no-colors
+      colors : true
+    });
+  };
+})();
