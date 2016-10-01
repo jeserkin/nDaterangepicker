@@ -1,5 +1,7 @@
-'use strict';
+(function() {
+  'use strict';
 
-describe('nDaterangepicker', function() {
+  describe('nDaterangepicker', function() {
 
-});
+  });
+})();
