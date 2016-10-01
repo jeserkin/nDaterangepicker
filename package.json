@@ -7,10 +7,7 @@
     "email": "jeserkin@gmail.com",
     "url": "blog.art-coder.com"
   },
-  "license": {
-    "type": "MIT",
-    "url": "http://www.opensource.org/licenses/mit-license.php"
-  },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/jeserkin/nDaterangepicker.git"
@@ -39,11 +36,14 @@
     "karma-chai": "0.1.0",
     "karma-mocha": "^0.1.8",
     "karma-mocha-reporter": "2.2.0",
+    "karma-junit-reporter": "^1.1.0",
     "karma-phantomjs-launcher": "1.0.2",
     "karma-ng-html2js-preprocessor": "1.0.0",
     "karma-ng-scenario": "1.0.0",
     "mocha": "3.1.0",
     "chai": "3.5.0",
-    "chai-jquery": "2.0.0"
+    "chai-jquery": "2.0.0",
+
+    "angular-mocks": "1.5.8"
   }
 }
